@@ -1,0 +1,22 @@
+{
+  "translation": {
+    "logoTitle1": "Qulay ",
+    "logoTitle2": "Magazin",
+    "createAccount": "Hisob yaratish",
+    "loginIn": {
+      "loginIn": "Kirish",
+      "inputNumber": "Telefon raqami",
+      "inputPassword": "Parol",
+      "login": "TIZIMGA KIRISH"
+    },
+    "signUp": {
+      "member": "Allaqachon a'zomisiz?",
+      "signUp": "Ro'yxatdan o'tish",
+      "inputFullName": "To'liq ism",
+      "inputNumber": "Telefon raqami",
+      "inputPassword": "Parol",
+      "inputConfirmPassword": "Parolni tasdiqlang",
+      "sign": "Ro'yxatdan o'tish"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "translation": {
+    "logoTitle1": "Удобный ",
+    "logoTitle2": "Рынок ",
+    "loginIn": {
+      "createAccount": "Зарегистрироваться",
+      "loginIn": "Войти в систему",
+      "inputNumber": "Номер телефона",
+      "inputPassword": "Пароль",
+      "login": "АВТОРИЗОВАТЬСЯ"
+    },
+    "signUp": {
+      "member": "Уже вступил?",
+      "signUp": "Зарегистрироваться",
+      "inputFullName": "Полное имя",
+      "inputNumber": "Номер телефона",
+      "inputPassword": "Пароль",
+      "inputConfirmPassword": "Подтвердите пароль",
+      "sign": "Зарегистрироваться"
+    }
+  }
+}
