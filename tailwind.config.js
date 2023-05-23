@@ -28,10 +28,14 @@ export default {
         primary: "#4F4F4F",
         secondary: "#6C7177DE",
         tertiary: "#A7A8AA",
+        logoColor: "#FF6B55",
       },
       borderColor: {
         one: "#DBDBDB",
         two: "#03A9F4",
+      },
+      backgroundColor: {
+        one: "#DBDBDB",
       },
     },
   },

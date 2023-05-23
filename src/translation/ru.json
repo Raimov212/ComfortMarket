@@ -17,6 +17,13 @@
       "inputPassword": "Пароль",
       "inputConfirmPassword": "Подтвердите пароль",
       "sign": "Зарегистрироваться"
+    },
+    "signUpError": {
+      "fullNameError": "Необходимо указать полное имя.",
+      "phoneNumberError": "Необходимо указать номер телефона.",
+      "passwordError": "Пароль не должен быть пустым",
+      "confirmPassword": "Пароль подтверждения не может быть пустым",
+      "confirmPasswordCorrectPasswordError": "Пароль проверки неверный"
     }
   }
 }

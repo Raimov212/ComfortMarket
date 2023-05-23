@@ -1,7 +1,7 @@
 {
   "translation": {
     "logoTitle1": "Qulay ",
-    "logoTitle2": "Magazin",
+    "logoTitle2": "Do'kon",
     "createAccount": "Hisob yaratish",
     "loginIn": {
       "loginIn": "Kirish",
@@ -17,6 +17,13 @@
       "inputPassword": "Parol",
       "inputConfirmPassword": "Parolni tasdiqlang",
       "sign": "Ro'yxatdan o'tish"
+    },
+    "signUpError": {
+      "fullNameError": "F.I.O bo'sh bo'lishi kerak emas",
+      "phoneNumberError": "Telefon raqami bo'sh bo'lishi kerak emas",
+      "passwordError": "Parol bo'sh bo'lishi kerak emas",
+      "confirmPassword": "Tekshirish paroli bo'sh bo'lishi mumkin emas",
+      "confirmPasswordCorrectPasswordError": "Tekshirish paroli xato"
     }
   }
 }
