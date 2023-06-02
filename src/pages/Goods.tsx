@@ -2,12 +2,12 @@ import { useAppSelector } from "../hook";
 import { CreateUser, Search } from "../assets/TableIcon";
 import { useState } from "react";
 import GoodsItem from "../components/Goods/GoodsItem";
+import { goods } from "../components/Goods/mock";
 
 const Goods = () => {
   const [q, setQ] = useState<string>("");
 
-  const goods: any = useAppSelector((state) => state.goods.goods[0]);
-  console.log("goods", goods);
+  // const goods: any = useAppSelector((state) => state.goods.goods[0]);
 
   function search(rows: any) {
     return rows.filter((row: any) =>
@@ -47,48 +47,7 @@ const Goods = () => {
             <div className="text-white">New Goods </div>
           </div>
         </div>
-
         <GoodsItem data={search(goods)} />
-        {/* <table className="w-[98%] mb-2" border={2}>
-          <tr>
-            <th>No</th>
-            <th>Category</th>
-            <th>Name</th>
-            <th>Count</th>
-            <th>Amount</th>
-            <th>Article</th>
-            <th>Barcode</th>
-            <th>WhereId</th>
-            <th>Picture</th>
-            <th>Action</th>
-          </tr>
-
-          {goods?.map((item: any, index: number) => (
-            <>
-              <tbody>
-                <tr>
-                  <td key={item.id}>{index + 1}</td>
-                  <td>{item.category}</td>
-                  <td>{item.name}</td>
-                  <td>{item.count}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.article}</td>
-                  <td>{item.barCode}</td>
-                  <td>{item.whereId}</td>
-                  <td>{item.pictureUrl}</td>
-                  <td>
-                    <div className="flex gap-2 items-center justify-center">
-                      <p className="border-r-2 border-one pr-2  text-yellow-400 cursor-pointer">
-                        edit
-                      </p>
-                      <p className="text-red-600 cursor-pointer">delete</p>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </>
-          ))}
-        </table> */}
       </div>
     </div>
   );
