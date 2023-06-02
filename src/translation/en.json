@@ -24,6 +24,17 @@
       "passwordError": "The password must not be empty",
       "confirmPassword": "The verification password cannot be empty",
       "confirmPasswordCorrectPasswordError": "Пароль подтверждения не может быть пустым"
-    }
+    },
+    "category": {
+      "dashboard": "Dashboard",
+      "sells": "Sells",
+      "clients": "Clients",
+      "goods": "Goods",
+      "categories": "Categories",
+      "management": "Shop management",
+      "reviews": "Reviews",
+      "employee": "Employees"
+    },
+    "errorLogin": "The login or password was entered incorrectly!"
   }
 }

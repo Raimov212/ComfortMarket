@@ -1,12 +1,15 @@
-import React, { SyntheticEvent, useCallback, useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/LoginSvgIcons";
 import { useNavigate } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
+import { useAppDispatch } from "../../hook";
+import { allData } from "../../redux/todoSlice";
 
-interface FormItem {
-  phoneNumber: string;
+type FormItem = {
+  userName: string;
   password: string;
-}
+};
 
 const Login = () => {
   //Errors
@@ -20,57 +23,89 @@ const Login = () => {
 
   const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const language = e.target.value;
+    const storageLanguage = JSON.stringify(language);
     changeLanguage(language);
-    localStorage.setItem("language", JSON.stringify(language));
+    localStorage.setItem("language", storageLanguage);
   };
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   //CREATE FORM
   const [showPassword, setShowPassword] = useState<Boolean>(false);
   const [formData, setFormData] = useState<FormItem>({
-    phoneNumber: "",
+    userName: "",
     password: "",
   });
 
-  const navigate = useNavigate();
+  const handleForm = async (e: SyntheticEvent) => {
+    e.preventDefault();
 
-  const handleForm = useCallback(
-    (e: SyntheticEvent): void => {
-      e.preventDefault();
+    if (formData.userName.length < 12) {
+      return setError(t("signUpError.phoneNumberError"));
+    } else if (formData.password === "") {
+      return setError(t("signUpError.passwordError"));
+    }
 
-      if (formData.phoneNumber.length < 12) {
-        return setError(t("signUpError.phoneNumberError"));
-      } else if (formData.password === "") {
-        return setError(t("signUpError.passwordError"));
-      }
+    setFormData({
+      ...formData,
+      userName: "",
+      password: "",
+    });
 
-      setFormData({
-        ...formData,
-        phoneNumber: "",
-        password: "",
+    navigate("/home");
+
+    try {
+      const response: AxiosResponse = await axios.post(
+        "../php/checkLoginPassword.php",
+        formData
+      );
+
+      const userId: string = response.data[0].userId;
+
+      const goods: AxiosResponse = await axios.post("../php/goods.php", {
+        userId: userId,
       });
 
-      setError("");
-      navigate("/");
-      console.log(formData);
-    },
-    [formData]
-  );
+      //store push allData
+      dispatch(allData(goods.data));
+
+      if (response.data.length) {
+        navigate("/home");
+      } else {
+        setError(t("errorLogin"));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("error message: ", error.message);
+        return error.message;
+      } else {
+        console.log("unexpected error: ", error);
+        return "An unexpected error occurred";
+      }
+    }
+
+    setError("");
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center mt-28 ">
-      <div className="flex gap-2 p-2">
+      <div className="flex p-2">
         <p className="text-[#6945FF] font-bold text-3xl">{t("logoTitle1")}</p>
-        <p className="text-[#FF6B55] font-bold">{t("logoTitle2")}</p>
+        <p className="text-[#FF6B55] font-bold text-3xl">{t("logoTitle2")}</p>
       </div>
       <div className="bg-white w-[460px] h-[350px] flex justify-center rounded-md">
         <div className="flex flex-col gap-8 w-full h-full">
           <div className="flex justify-end pt-6 pr-6 gap-2">
-            <p className="text-sm font-semibold text-primary cursor-pointer">
+            <p
+              className="text-sm font-semibold text-two cursor-pointer"
+              onClick={() => navigate("/register")}
+            >
               {t("loginIn.createAccount")}
             </p>
             <select
               defaultValue={language}
-              className="text-sm font-semibold outline-none text-tertiary cursor-pointer "
+              className="text-sm font-semibold outline-none text-three cursor-pointer "
               onChange={handleChangeLanguage}
             >
               <option value="uz">uz</option>
@@ -78,7 +113,7 @@ const Login = () => {
               <option value="en">en</option>
             </select>
           </div>
-          <p className="text-primary font-semibold text-center">
+          <p className="text-one font-semibold text-center">
             {t("loginIn.loginIn")}
           </p>
           <form
@@ -91,13 +126,13 @@ const Login = () => {
               </div>
               <input
                 type="tel"
-                name="phoneNumber"
+                name="userName"
                 pattern="[\+][0-9]{12}"
                 className="w-[90%] border-b-2 outline-none pl-10 pb-2 text-base font-normal h-10"
                 placeholder={t("loginIn.inputNumber") as string}
-                value={formData.phoneNumber}
+                value={formData.userName}
                 onChange={(e) =>
-                  setFormData({ ...formData, phoneNumber: e.target.value })
+                  setFormData({ ...formData, userName: e.target.value })
                 }
               />
             </div>

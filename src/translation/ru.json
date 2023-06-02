@@ -24,6 +24,17 @@
       "passwordError": "Пароль не должен быть пустым",
       "confirmPassword": "Пароль подтверждения не может быть пустым",
       "confirmPasswordCorrectPasswordError": "Пароль проверки неверный"
-    }
+    },
+    "category": {
+      "dashboard": "Панель приборов",
+      "sells": "Продает",
+      "clients": "Клиенты",
+      "goods": "Товары",
+      "categories": "Категории",
+      "management": "Управление магазином",
+      "reviews": "Отзывы",
+      "employee": "Сотрудники"
+    },
+    "errorLogin": "Логин или пароль введен неверно!"
   }
 }

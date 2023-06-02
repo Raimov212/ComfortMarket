@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Loading } from "./components/Suspense";
-import "./App.css";
+import Error from "./components/Error/index.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
@@ -22,6 +22,14 @@ function App() {
       <Routes>
         <Route
           path="/"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Login />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/home"
           element={
             <Suspense fallback={<Loading />}>
               <Home />
@@ -93,25 +101,23 @@ function App() {
             }
           />
         </Route>
-        <Route path="/auth">
-          <Route
-            path="login"
-            index
-            element={
-              <Suspense fallback={<Loading />}>
-                <Login />
-              </Suspense>
-            }
-          />
-          <Route
-            path="register"
-            element={
-              <Suspense fallback={<Loading />}>
-                <Register />
-              </Suspense>
-            }
-          />
-        </Route>
+        <Route
+          path="/register"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Register />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<Loading />}>
+              <Error />
+            </Suspense>
+          }
+        />
       </Routes>
     </>
   );

@@ -25,10 +25,10 @@ export default {
         buttonColor: "#4CAF50",
       },
       textColor: {
-        primary: "#4F4F4F",
-        secondary: "#6C7177DE",
-        tertiary: "#A7A8AA",
-        logoColor: "#FF6B55",
+        one: "#4F4F4F",
+        two: "#6C7177DE",
+        three: "#A7A8AA",
+        foo: "#FF6B55",
       },
       borderColor: {
         one: "#DBDBDB",

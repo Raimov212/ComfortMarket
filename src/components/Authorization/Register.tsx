@@ -81,19 +81,22 @@ const Register = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center mt-28 ">
-      <div className="flex gap-2 p-2">
+      <div className="flex p-2">
         <p className="text-[#6945FF] font-bold text-3xl">{t("logoTitle1")}</p>
-        <p className="text-[#FF6B55] font-bold">{t("logoTitle2")}</p>
+        <p className="text-[#FF6B55] font-bold text-3xl">{t("logoTitle2")}</p>
       </div>
       <div className="bg-white w-[460px] h-[450px] flex justify-center rounded-md">
         <div className="flex flex-col gap-8 w-full h-full">
           <div className="flex justify-end pt-6 pr-6 gap-2">
-            <p className="text-sm font-semibold text-primary cursor-pointer">
+            <p
+              className="text-sm font-semibold text-two cursor-pointer"
+              onClick={() => navigate("/")}
+            >
               {t("signUp.member")}
             </p>
             <select
               defaultValue={language}
-              className="text-sm font-semibold outline-none text-tertiary cursor-pointer "
+              className="text-sm font-semibold outline-none text-three cursor-pointer "
               onChange={handleChangeLanguage}
             >
               <option value="uz">uz</option>
@@ -101,7 +104,7 @@ const Register = () => {
               <option value="en">en</option>
             </select>
           </div>
-          <p className="text-primary font-semibold text-center">
+          <p className="text-one font-semibold text-center">
             {t("signUp.signUp")}
           </p>
           <form

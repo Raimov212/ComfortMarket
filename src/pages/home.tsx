@@ -1,7 +1,7 @@
-import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Navbar from "../components/Navbar/Navbar";
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { Loading } from "../components/Suspense";
 import Layout from "../components/Layout.tsx";
 
@@ -88,23 +88,19 @@ const Home = () => {
                     </Suspense>
                   }
                 />
+                <Route
+                  path="*"
+                  element={
+                    <Suspense fallback={<Loading />}>
+                      <Dashboard />
+                    </Suspense>
+                  }
+                />
               </Routes>
             </Layout>
           </div>
         </div>
       </div>
-      {/* <button
-        className="m-4 p-4 bg-blue-400"
-        onClick={() => navigate("/auth/login")}
-      >
-        LoginPage
-      </button>
-      <button
-        className="m-4 p-4 bg-blue-400"
-        onClick={() => navigate("/auth/register")}
-      >
-        Register
-      </button> */}
     </div>
   );
 };

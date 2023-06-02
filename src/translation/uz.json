@@ -24,6 +24,17 @@
       "passwordError": "Parol bo'sh bo'lishi kerak emas",
       "confirmPassword": "Tekshirish paroli bo'sh bo'lishi mumkin emas",
       "confirmPasswordCorrectPasswordError": "Tekshirish paroli xato"
-    }
+    },
+    "category": {
+      "dashboard": "Boshqaruv paneli",
+      "sells": "Sotish",
+      "clients": "Mijozlar",
+      "goods": "Tovarlar",
+      "categories": "Kategoriyalar",
+      "management": "Do'kon boshqaruvi",
+      "reviews": "Sharhlar",
+      "employee": "Xodimlar"
+    },
+    "errorLogin": "Login yoki parol xato kiritildi!"
   }
 }
