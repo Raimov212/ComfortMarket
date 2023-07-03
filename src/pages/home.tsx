@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Navbar from "../components/Navbar/Navbar";
+import Sidebar from "../components/Sidebar/Sidebar.tsx";
+import Navbar from "../components/Navbar/Navbar.tsx";
 import { Suspense, lazy } from "react";
-import { Loading } from "../components/Suspense";
+import { Loading } from "../components/Suspense.tsx";
 import Layout from "../components/Layout.tsx";
 
 const Dashboard = lazy(() => import("./Dashboard.tsx"));

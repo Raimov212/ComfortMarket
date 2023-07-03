@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Loading } from "./components/Suspense";
 import Error from "./components/Error/index.tsx";
 
-const Home = lazy(() => import("./pages/Home.tsx"));
+const Home = lazy(() => import("./pages/home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
 const Register = lazy(() => import("./components/Authorization/Register.tsx"));
 //SIDEBAR
@@ -68,6 +68,7 @@ function App() {
               </Suspense>
             }
           />
+          z
           <Route
             path="categories"
             element={
