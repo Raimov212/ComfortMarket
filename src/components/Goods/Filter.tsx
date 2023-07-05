@@ -14,7 +14,6 @@ const GoodsFilter: React.FC<FilterProps> = ({
     barCode: "",
     wherecome: "",
   });
-  console.log("filterData", filterData);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

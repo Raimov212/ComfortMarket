@@ -6,10 +6,15 @@ import {
   TwoRightAngle,
 } from "../../assets/icons/paginationIcon";
 import { AllData, Data } from "./goods";
+import { useAppSelector } from "../../hook";
+import { useTranslation } from "react-i18next";
 
 const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
+  const count = useAppSelector((state) => state.goods.goodsCount);
   const itemsPerPage: number = 10;
   const jumpArr: number[] = [];
+
+  const { t } = useTranslation();
 
   // const count: number = Math.ceil(data.length / itemsPerPage);
   const _DATA = usePagination({ data, itemsPerPage });
@@ -20,10 +25,6 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
   for (let i = currentPaged; i < currentPaged + 10; i++) {
     jumpArr.push(i);
   }
-
-  // for (let i = 0; i < count; i++) {
-  //   pageNumbers.push(i);
-  // }
 
   const handleChange = (p: number) => {
     return jumpArr[0] !== 1 && jumpArr[0] === p
@@ -84,29 +85,42 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
           ))}
         </tbody>
       </table>
-      <div className="flex gap-2 h-full max-w-96 items-center">
-        <div onClick={(e) => handleFirstPage(e)} className="cursor-pointer">
-          <TwoLeftAngle />
+      <div className="flex justify-between p-2">
+        <div>
+          <div
+            className={`${
+              data?.length === count
+                ? "text-primary font-medium"
+                : "text-secondary font-medium"
+            } `}
+          >
+            {t("goods.currentGoodsValue")} : {data.length}
+          </div>
         </div>
-        <div onClick={(e) => handlePrev(e)} className="cursor-pointer">
-          <OneLeftAngle />
-        </div>
-        <ul className="flex flex-wrap  gap-2">
-          {jumpArr?.map((page) => (
-            <li
-              key={page}
-              className="cursor-pointer"
-              onClick={() => handleChange(page)}
-            >
-              {page}
-            </li>
-          ))}
-        </ul>
-        <div onClick={(e) => handleNext(e)} className="cursor-pointer">
-          <OneRightAngle />
-        </div>
-        <div onClick={(e) => handleLastPage(e)} className="cursor-pointer">
-          <TwoRightAngle />
+        <div className="flex gap-2 h-full max-w-96 items-center">
+          <div onClick={(e) => handleFirstPage(e)} className="cursor-pointer">
+            <TwoLeftAngle />
+          </div>
+          <div onClick={(e) => handlePrev(e)} className="cursor-pointer">
+            <OneLeftAngle />
+          </div>
+          <ul className="flex flex-wrap  gap-2">
+            {jumpArr?.map((page) => (
+              <li
+                key={page}
+                className="cursor-pointer"
+                onClick={() => handleChange(page)}
+              >
+                {page}
+              </li>
+            ))}
+          </ul>
+          <div onClick={(e) => handleNext(e)} className="cursor-pointer">
+            <OneRightAngle />
+          </div>
+          <div onClick={(e) => handleLastPage(e)} className="cursor-pointer">
+            <TwoRightAngle />
+          </div>
         </div>
       </div>
     </div>

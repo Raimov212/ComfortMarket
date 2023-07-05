@@ -2,7 +2,7 @@ import { useAppSelector } from "../hook";
 import { CreateUser } from "../assets/TableIcon";
 import { useState } from "react";
 import GoodsItem from "../components/Goods/Items";
-import { allDataGoods } from "../components/Goods/mock";
+// import { allDataGoods } from "../components/Goods/mock";
 
 import { FilterIcon } from "../assets/icons/filter";
 import GoodsFilter from "../components/Goods/Filter";
@@ -14,9 +14,10 @@ const Goods = () => {
   const [searchArrItemCategory, setSearchArrItemCategory] =
     useState<string[]>();
 
-  const goods = allDataGoods as AllData[];
+  // const goods = allDataGoods as AllData[];
 
-  // const goods: any = useAppSelector((state) => state.goods.goods[0]);
+  const allData = useAppSelector((state) => state.goods.goods[0]);
+  const goods = allData as unknown as AllData[];
 
   const filterData: GoodsProps = {
     categoryFilter: [...new Set(goods?.map((n) => n.category))],

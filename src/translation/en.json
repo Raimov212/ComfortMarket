@@ -35,6 +35,9 @@
       "reviews": "Reviews",
       "employee": "Employees"
     },
-    "errorLogin": "The login or password was entered incorrectly!"
+    "errorLogin": "The login or password was entered incorrectly!",
+    "goods": {
+      "currentGoodsValue": "Current value"
+    }
   }
 }

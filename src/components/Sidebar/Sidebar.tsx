@@ -11,11 +11,16 @@ import {
   SellsIcons,
 } from "../../assets/IconsSVG";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../hook";
 
 const Sidebar = () => {
   const { t } = useTranslation();
 
   const { pathname } = useLocation();
+
+  const user = useAppSelector((state) => state.user);
+  const userData = user.userData[0].fullName;
+  const userLocation = user.userLocation[0].shopName;
 
   const slicePathname = pathname.slice(1);
 
@@ -64,7 +69,7 @@ const Sidebar = () => {
     <div className="flex-initial w-[239px] bg-white h-full flex flex-col items-center">
       <div className="flex-[1] flex flex-col items-center gap-4 mt-4">
         <div className="w-24 h-24 bg-blue-300 rounded-full "></div>
-        <label className="text-two">Welcome, Wahyu Fatur</label>
+        <label className="text-two font-medium">{userData}</label>
       </div>
       <div className="flex-[2.8] flex flex-col justify-self-start w-full">
         <NavLink
@@ -155,6 +160,9 @@ const Sidebar = () => {
           <EmployeeIcons />
           {t("category.employee")}
         </NavLink>
+      </div>
+      <div className="mt-auto pb-2">
+        <label className="text-three font-medium">{userLocation}</label>
       </div>
     </div>
   );

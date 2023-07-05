@@ -4,7 +4,8 @@ import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/LoginSvgIcons";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "../../hook";
-import { allData } from "../../redux/todoSlice";
+import { goodsData } from "../../redux/todoSlice";
+import { userData } from "../../redux/userSlice";
 
 type FormItem = {
   userName: string;
@@ -53,13 +54,13 @@ const Login = () => {
       password: "",
     });
 
-    navigate("/home");
-
     try {
       const response: AxiosResponse = await axios.post(
         "../php/checkLoginPassword.php",
         formData
       );
+
+      console.log("response", response);
 
       const userId: string = response.data[0].userId;
 
@@ -67,8 +68,11 @@ const Login = () => {
         userId: userId,
       });
 
-      //store push allData
-      dispatch(allData(goods.data));
+      navigate("/home");
+
+      // console.log("goods", goods);
+      dispatch(userData(response.data));
+      dispatch(goodsData(goods.data));
 
       if (response.data.length) {
         navigate("/home");
@@ -80,6 +84,7 @@ const Login = () => {
         console.log("error message: ", error.message);
         return error.message;
       } else {
+        setError(t("errorLogin"));
         console.log("unexpected error: ", error);
         return "An unexpected error occurred";
       }

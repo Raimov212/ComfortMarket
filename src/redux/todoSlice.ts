@@ -53,7 +53,7 @@ const goodsSlice = createSlice({
   name: "goods",
   initialState,
   reducers: {
-    allData: (state, action: PayloadAction<any>) => {
+    goodsData: (state, action: PayloadAction<any>) => {
       state.goodsCount = action.payload[0];
       state.goods.push(action.payload[1]);
       state.goodsCategory.push(action.payload[2]);
@@ -63,6 +63,6 @@ const goodsSlice = createSlice({
   },
 });
 
-export const { allData } = goodsSlice.actions;
+export const { goodsData } = goodsSlice.actions;
 
 export default goodsSlice.reducer;

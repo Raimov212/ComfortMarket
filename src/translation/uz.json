@@ -35,6 +35,9 @@
       "reviews": "Sharhlar",
       "employee": "Xodimlar"
     },
-    "errorLogin": "Login yoki parol xato kiritildi!"
+    "errorLogin": "Login yoki parol xato kiritildi!",
+    "goods": {
+      "currentGoodsValue": "Hozirgi qiymat"
+    }
   }
 }
