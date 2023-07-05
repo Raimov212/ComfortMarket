@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Data } from "./goods";
 
-function usePagination({ data, itemsPerPage, jumpArr }: Data) {
+function usePagination({ data, itemsPerPage }: Data) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const maxPage = Math.ceil(data.length / itemsPerPage);
 

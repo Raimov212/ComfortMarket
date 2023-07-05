@@ -1,9 +1,9 @@
-export const goods = [
+export const allDataGoods = [
   {
     amount: "10000.00",
     article: "GXW-74359",
     barCode: "2000000020631",
-    category: "Другой",
+    category: "Другой1",
     categoryId: "1",
     count: "3",
     id: "699",
@@ -17,7 +17,7 @@ export const goods = [
     amount: "10000.00",
     article: "GXW-74359",
     barCode: "2000000020631",
-    category: "Другой",
+    category: "Другой1",
     categoryId: "1",
     count: "3",
     id: "699",
@@ -31,7 +31,7 @@ export const goods = [
     amount: "10000.00",
     article: "GXW-74359",
     barCode: "2000000020631",
-    category: "Другой",
+    category: "Другой1",
     categoryId: "1",
     count: "3",
     id: "699",

@@ -1,4 +1,5 @@
-type AllData = {
+export type AllData = {
+  [key: string]: string;
   amount: string;
   article: string;
   barCode: string;
@@ -16,6 +17,14 @@ type AllData = {
 export type Data = {
   data: AllData[];
   itemsPerPage: number;
-  jumpArr: Array<number>;
-  //   newData: AllData[];
+};
+
+export type GoodsProps = {
+  [key: string]: string[];
+  categoryFilter: string[] | null;
+  nameFilter: string[] | null;
+  amountFilter: string[] | null;
+  articleFilter: string[] | null;
+  barCodeFilter: string[] | null;
+  wherecomeFilter: string[] | null;
 };

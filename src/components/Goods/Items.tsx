@@ -5,19 +5,16 @@ import {
   TwoLeftAngle,
   TwoRightAngle,
 } from "../../assets/icons/paginationIcon";
-import { Data } from "./goods";
+import { AllData, Data } from "./goods";
 
 const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
-  // console.log("goodsItem", data);
-
-  // const pageNumbers: number[] = [];
   const itemsPerPage: number = 10;
   const jumpArr: number[] = [];
 
   // const count: number = Math.ceil(data.length / itemsPerPage);
-  const _DATA = usePagination({ data, itemsPerPage, jumpArr });
+  const _DATA = usePagination({ data, itemsPerPage });
 
-  const newData: string[] | any = _DATA?.currentData();
+  const newData: AllData[] = _DATA?.currentData();
   const currentPaged = _DATA.currentPage;
 
   for (let i = currentPaged; i < currentPaged + 10; i++) {
@@ -47,7 +44,7 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
     _DATA.lastPage(e);
 
   return (
-    <div className="h-full w-full   p-2">
+    <div className="h-full w-full p-2">
       <table>
         <thead>
           <tr className="hover:scale-100 bg-primary text-white hover:bg-primary hover:shadow-none">
@@ -64,7 +61,7 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {newData?.map((item: any, index: any) => (
+          {newData?.map((item, index) => (
             <tr key={item.id}>
               <td>
                 {(currentPaged === 1 ? currentPaged : currentPaged * 10) +
