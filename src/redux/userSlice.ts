@@ -15,11 +15,13 @@ type userLocationProps = {
 type UserState = {
   userData: userDataProps[];
   userLocation: userLocationProps[];
+  statusProps: string;
 };
 
 const initialState: UserState = {
   userData: [],
-  userLocation: [],
+  userLocation: [] || null,
+  statusProps: "",
 };
 
 const userSlice = createSlice({
@@ -27,12 +29,17 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     userData: (state, action: PayloadAction<any>) => {
-      state.userData.push(action.payload[0]);
-      state.userLocation.push(action.payload[1][0]);
+      state.userData.push(action.payload[0] !== null && action.payload[0]);
+      state.userLocation.push(
+        action.payload[1] !== null && action.payload[1][0]
+      );
+    },
+    userStatus: (state, action: PayloadAction<string>) => {
+      state.statusProps = action.payload;
     },
   },
 });
 
-export const { userData } = userSlice.actions;
+export const { userData, userStatus } = userSlice.actions;
 
 export default userSlice.reducer;

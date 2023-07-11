@@ -2,12 +2,15 @@
   "translation": {
     "logoTitle1": "Qulay ",
     "logoTitle2": "Do'kon",
-    "createAccount": "Hisob yaratish",
     "loginIn": {
+      "createAccount": "Hisob yaratish",
       "loginIn": "Kirish",
       "inputNumber": "Telefon raqami",
       "inputPassword": "Parol",
-      "login": "TIZIMGA KIRISH"
+      "login": "TIZIMGA KIRISH",
+      "errorLogin": {
+        "title": "Login yoki parol no'tog'ri"
+      }
     },
     "signUp": {
       "member": "Allaqachon a'zomisiz?",
@@ -16,11 +19,20 @@
       "inputNumber": "Telefon raqami",
       "inputPassword": "Parol",
       "inputConfirmPassword": "Parolni tasdiqlang",
-      "sign": "Ro'yxatdan o'tish"
+      "sign": "Ro'yxatdan o'tish",
+      "errorLogin": {
+        "title": "Tizimda xatolik",
+        "span": "Administrator bilan bog'laning!"
+      },
+      "success": {
+        "title": "Muvoffaqiyatli bajarildi!"
+      },
+      "alreadyUser": "Bunday telefon raqam ro'yxatdan o'tgan"
     },
     "signUpError": {
-      "fullNameError": "F.I.O bo'sh bo'lishi kerak emas",
-      "phoneNumberError": "Telefon raqami bo'sh bo'lishi kerak emas",
+      "fullNameError": "F.I.O bo'sh bo'lishi mumkin emas",
+      "phoneNumberError": "Telefon raqami bo'sh bo'lishi mumkin emas",
+      "phoneNumberLengthError": "Telefon raqami to'liq bo'lishi kerak",
       "passwordError": "Parol bo'sh bo'lishi kerak emas",
       "confirmPassword": "Tekshirish paroli bo'sh bo'lishi mumkin emas",
       "confirmPasswordCorrectPasswordError": "Tekshirish paroli xato"
@@ -38,6 +50,18 @@
     "errorLogin": "Login yoki parol xato kiritildi!",
     "goods": {
       "currentGoodsValue": "Hozirgi qiymat"
+    },
+    "statusUser": {
+      "1": "Menejer",
+      "2": "Bosh sotuvchi",
+      "3": "Yordamchi sotuvchi ",
+      "4": "Mijoz"
+    },
+    "createShop": {
+      "title": "Do'konni ro'yxatdan o'tkazish",
+      "shopName": "Do'kon nomi",
+      "address": "Do'kon manzili",
+      "createButton": "Ro'yxatdan o'tkazish"
     }
   }
 }

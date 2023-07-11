@@ -55,8 +55,8 @@ const goodsSlice = createSlice({
   reducers: {
     goodsData: (state, action: PayloadAction<any>) => {
       state.goodsCount = action.payload[0];
-      state.goods.push(action.payload[1]);
-      state.goodsCategory.push(action.payload[2]);
+      state.goods.push(action.payload[1] !== null && action.payload[1]);
+      state.goodsCategory.push(action.payload[2] !== null && action.payload[2]);
       state.goodsData.push(action.payload[3]);
       state.goodsLocation.push(action.payload[4]);
     },

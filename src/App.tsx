@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Loading } from "./components/Suspense";
 import Error from "./components/Error/index.tsx";
+import CreateShop from "./components/Authorization/CreateShop.tsx";
 
 const Home = lazy(() => import("./pages/home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
@@ -103,14 +104,21 @@ function App() {
           />
         </Route>
         <Route
-          path="/register"
+          path="/register/user"
           element={
             <Suspense fallback={<Loading />}>
               <Register />
             </Suspense>
           }
         />
-
+        <Route
+          path="/register/createShop"
+          element={
+            <Suspense fallback={<Loading />}>
+              <CreateShop />
+            </Suspense>
+          }
+        />
         <Route
           path="*"
           element={

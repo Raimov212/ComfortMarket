@@ -6,11 +6,9 @@ import {
   TwoRightAngle,
 } from "../../assets/icons/paginationIcon";
 import { AllData, Data } from "./goods";
-import { useAppSelector } from "../../hook";
 import { useTranslation } from "react-i18next";
 
 const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
-  const count = useAppSelector((state) => state.goods.goodsCount);
   const itemsPerPage: number = 10;
   const jumpArr: number[] = [];
 
@@ -87,14 +85,9 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
       </table>
       <div className="flex justify-between p-2">
         <div>
-          <div
-            className={`${
-              data?.length === count
-                ? "text-primary font-medium"
-                : "text-secondary font-medium"
-            } `}
-          >
-            {t("goods.currentGoodsValue")} : {data.length}
+          <div className="text-primary flex items-center gap-1">
+            <div className="font-normal">{t("goods.currentGoodsValue")}:</div>
+            <div className="font-medium">{data.length}</div>
           </div>
         </div>
         <div className="flex gap-2 h-full max-w-96 items-center">

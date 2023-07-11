@@ -1,5 +1,5 @@
 import { useAppSelector } from "../hook";
-import { CreateUser } from "../assets/TableIcon";
+import { CreateUser } from "../assets/icons/TableIcon";
 import { useState } from "react";
 import GoodsItem from "../components/Goods/Items";
 // import { allDataGoods } from "../components/Goods/mock";

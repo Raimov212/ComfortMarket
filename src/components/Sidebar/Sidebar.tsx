@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   CategoriesIcons,
@@ -9,20 +9,39 @@ import {
   ManagementIcons,
   ReviewsIcons,
   SellsIcons,
-} from "../../assets/IconsSVG";
+} from "../../assets/icons/IconsSVG";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../hook";
 
 const Sidebar = () => {
   const { t } = useTranslation();
+  const [statusText, setStatusText] = useState<string>("");
 
   const { pathname } = useLocation();
 
   const user = useAppSelector((state) => state.user);
   const userData = user.userData[0].fullName;
+  const status = user.userData[0].status;
   const userLocation = user.userLocation[0].shopName;
 
   const slicePathname = pathname.slice(1);
+
+  useEffect(() => {
+    switch (status) {
+      case "1":
+        setStatusText(`${t("statusUser.1")}`);
+        break;
+      case "2":
+        setStatusText(`${t("statusUser.2")}`);
+        break;
+      case "3":
+        setStatusText(`${t("statusUser.3")}`);
+        break;
+      case "4":
+        setStatusText(`${t("statusUser.4")}`);
+        break;
+    }
+  }, [status]);
 
   useEffect(() => {
     switch (slicePathname) {
@@ -67,9 +86,11 @@ const Sidebar = () => {
 
   return (
     <div className="flex-initial w-[239px] bg-white h-full flex flex-col items-center">
-      <div className="flex-[1] flex flex-col items-center gap-4 mt-4">
+      <div className="flex flex-col items-center mt-4">
         <div className="w-24 h-24 bg-blue-300 rounded-full "></div>
+        <label className="text-two font-bold">{statusText}</label>
         <label className="text-two font-medium">{userData}</label>
+        <label className="text-three font-normal">{userLocation}</label>
       </div>
       <div className="flex-[2.8] flex flex-col justify-self-start w-full">
         <NavLink
@@ -161,9 +182,7 @@ const Sidebar = () => {
           {t("category.employee")}
         </NavLink>
       </div>
-      <div className="mt-auto pb-2">
-        <label className="text-three font-medium">{userLocation}</label>
-      </div>
+      <div className="mt-auto pb-2"></div>
     </div>
   );
 };

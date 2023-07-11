@@ -1,6 +1,6 @@
-import React, { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/LoginSvgIcons";
+import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/icons/LoginSvgIcons";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "../../hook";
@@ -68,11 +68,10 @@ const Login = () => {
         userId: userId,
       });
 
-      navigate("/home");
-
-      // console.log("goods", goods);
       dispatch(userData(response.data));
       dispatch(goodsData(goods.data));
+
+      // console.log("goods", goods);
 
       if (response.data.length) {
         navigate("/home");
@@ -92,6 +91,7 @@ const Login = () => {
 
     setError("");
   };
+  //Modal
 
   return (
     <div className="w-full h-full flex flex-col items-center mt-28 ">
@@ -104,7 +104,7 @@ const Login = () => {
           <div className="flex justify-end pt-6 pr-6 gap-2">
             <p
               className="text-sm font-semibold text-two cursor-pointer"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/register/user")}
             >
               {t("loginIn.createAccount")}
             </p>
