@@ -12,6 +12,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   background-color: #efefef;
+  box-sizing: border-box;
 }
 
 @layer base {
@@ -21,5 +22,8 @@
     -webkit-appearance: none;
     margin: 0;
     -moz-appearance: textfield !important;
+  }
+  input {
+    width: 200px;
   }
 }

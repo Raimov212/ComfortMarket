@@ -54,6 +54,8 @@ const Login = () => {
       password: "",
     });
 
+    navigate("/home");
+
     try {
       const response: AxiosResponse = await axios.post(
         "../php/checkLoginPassword.php",

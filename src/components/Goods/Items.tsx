@@ -43,20 +43,20 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
     _DATA.lastPage(e);
 
   return (
-    <div className="h-full w-full p-2">
+    <div className="h-full w-full">
       <table>
         <thead>
           <tr className="hover:scale-100 bg-primary text-white hover:bg-primary hover:shadow-none">
-            <th className="">No</th>
-            <th className="">Category</th>
-            <th className="">Name</th>
-            <th className="">Count</th>
-            <th className="">Amount</th>
-            <th className="">Article</th>
-            <th className="">Barcode</th>
-            <th className="">Where</th>
-            <th className="">Picture</th>
-            <th className="">Action</th>
+            <th>No</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Count</th>
+            <th>Amount</th>
+            <th>Article</th>
+            <th>Barcode</th>
+            <th>Where</th>
+            <th>Picture</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
