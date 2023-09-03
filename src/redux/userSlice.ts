@@ -25,8 +25,6 @@ const initialState: UserState = {
   statusProps: "",
 };
 
-const clearAction = createAction("clear");
-
 const userSlice = createSlice({
   name: "user",
   initialState,

@@ -66,8 +66,8 @@ const Login = () => {
         formData
       );
 
-      console.log("response", response);
-      console.log("formData", formData);
+      // console.log("response", response);
+      // console.log("formData", formData);
 
       const userId: string = response.data[0].userId;
 
@@ -78,7 +78,7 @@ const Login = () => {
       dispatch(userData(response.data));
       dispatch(goodsData(goods.data));
 
-      // console.log("goods", goods);
+      console.log("goods", goods);
 
       if (response.data.length) {
         navigate("/home");

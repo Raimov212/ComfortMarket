@@ -53,19 +53,33 @@
     },
     "errorLogin": "The login or password was entered incorrectly!",
     "goods": {
-      "currentGoodsValue": "Current value"
+      "createGoodsModalPage": "Adding a product",
+      "currentGoodsValue": "Current value",
+      "createPremise": {
+        "category": "Select a category",
+        "name": "Name of product",
+        "amount": "Amount",
+        "article": "Article",
+        "barCode": "Barcode",
+        "whereCome": "Choose where the product comes from",
+        "createButton": "Add"
+      },
+      "createGoodsSuccess": " added!",
+      "createGoodsError": "This product is registered",
+      "createPremiseError": {
+        "category": "Choose a category!",
+        "name": "Product name cannot be empty!",
+        "amount": "Product price?",
+        "article": "The article cannot be empty!",
+        "barCode": "The barcode cannot be empty!",
+        "whereCome": "Where did the product come from?"
+      }
     },
     "statusUser": {
       "1": "Manager",
       "2": "Main seller",
       "3": "Sales Assistant ",
       "4": "Client"
-    },
-    "createShop": {
-      "title": "Store registration",
-      "shopName": "Store name",
-      "address": "Store address",
-      "createButton": "Registration"
     }
   }
 }

@@ -198,7 +198,7 @@ const CreateShop = () => {
               type="submit"
               className="w-[90%] h-10 text-md text-white rounded-sm bg-secondary "
             >
-              {t("createShop.createButton")}
+              {t("goods.createPremise.createButton")}
             </button>
           </form>
         </div>

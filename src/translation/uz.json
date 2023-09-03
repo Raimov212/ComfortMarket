@@ -49,19 +49,33 @@
     },
     "errorLogin": "Login yoki parol xato kiritildi!",
     "goods": {
-      "currentGoodsValue": "Hozirgi qiymat"
+      "createGoodsModalPage": "Mahsulotni qo'shish",
+      "currentGoodsValue": "Current value",
+      "createPremise": {
+        "category": "Kategoriyani tanlang",
+        "createPremise": "Mahsulot nomi",
+        "amount": "Narxi",
+        "article": "Artikul",
+        "barCode": "Shtrix kod",
+        "whereCome": "Mahsulot kelgan joyni tanlang",
+        "createButton": "Qo'shish"
+      },
+      "createGoodsSuccess": " qo'shildi!",
+      "createGoodsError": "Ushbu mahsulot ro'yxatdan o'tgan",
+      "createPremiseError": {
+        "category": "Categoriyani tanlang!",
+        "name": "Mahsulot nomi bo'sh bo'lishi mumkin emas!",
+        "amount": "Mahsulot narxi?",
+        "article": "Artikul bo'sh bo'lishi mumkin emas!",
+        "barCode": "Shtrix-kod bo'sh bo'lishi mumkin emas!",
+        "whereCome": "Mahsulot qayerdan kelgan?"
+      }
     },
     "statusUser": {
       "1": "Menejer",
       "2": "Bosh sotuvchi",
       "3": "Yordamchi sotuvchi ",
       "4": "Mijoz"
-    },
-    "createShop": {
-      "title": "Do'konni ro'yxatdan o'tkazish",
-      "shopName": "Do'kon nomi",
-      "address": "Do'kon manzili",
-      "createButton": "Ro'yxatdan o'tkazish"
     }
   }
 }

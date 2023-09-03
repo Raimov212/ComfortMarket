@@ -13,6 +13,7 @@ type AllGods = {
 };
 
 type GoodsCategory = {
+  [x: string]: any;
   count?: string;
   id: string;
   name?: string;
@@ -29,6 +30,7 @@ type GoodsData = {
 };
 
 type GoodsLocation = {
+  [x: string]: any;
   id: string;
   name: string;
 };
