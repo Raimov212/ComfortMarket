@@ -1,16 +1,22 @@
 import { useState, useCallback, useEffect } from "react";
 import { CreateGoodsType } from "./createGoodsType";
+import { getGoodsApi } from "../../../api/goodsApi";
+import { useAppSelector } from "../../../hook";
 
 const CreateGoods: React.FC<CreateGoodsType> = ({
   setOpenCreateGoodsProps,
 }): JSX.Element => {
+  const userID = useAppSelector((state) => state.user.userData[0].userId);
+  const parentID = useAppSelector((state) => state.user.userData[0].parentId);
   const [createGoodsInput, setCreateGoodsInput] = useState({
-    category: "",
+    userId: userID,
+    pUserId: parentID,
+    categoryId: "",
     name: "",
     amount: "",
     article: "",
     barCode: "",
-    wherecome: "",
+    whereId: "",
   });
 
   const handleInputChange = useCallback(
@@ -40,10 +46,16 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
     };
   }, []);
 
-  const createGoodsForm = (e: { preventDefault: () => void }) => {
+  const createGoodsForm = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setOpenCreateGoodsProps((prev) => !prev);
-    console.log(createGoodsInput);
+    const addToBaseGoods = await getGoodsApi.post(
+      "/goodsAddToBase.php",
+      createGoodsInput
+    );
+    console.log("addToBaseGoods", addToBaseGoods);
+
+    // console.log(createGoodsInput);
   };
 
   return (
@@ -55,10 +67,10 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
       >
         <input
           type="text"
-          name="category"
+          name="categoryId"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary"
           placeholder="Category"
-          value={createGoodsInput.category}
+          value={createGoodsInput.categoryId}
           autoComplete="on"
           list="categoryId"
           onChange={handleInputChange}
@@ -105,10 +117,10 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
         />
         <input
           type="text"
-          name="wherecome"
+          name="whereId"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary"
           placeholder="Wherecome"
-          value={createGoodsInput.wherecome}
+          value={createGoodsInput.whereId}
           autoComplete="on"
           list="wherecomeId"
           onChange={handleInputChange}

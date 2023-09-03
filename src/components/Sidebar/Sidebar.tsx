@@ -20,12 +20,10 @@ const Sidebar = () => {
 
   const { pathname } = useLocation();
 
-  console.log(sidebarScroll);
-
   const user = useAppSelector((state) => state.user);
   const userData = user.userData[0]?.fullName;
   const status = user.userData[0]?.status;
-  const userLocation = user.userLocation[0]?.shopName;
+  const userLocation = user.userLocation[0]?.premiseName;
 
   const slicePathname = pathname.slice(1);
 

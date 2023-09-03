@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar/Navbar.tsx";
 import { Suspense, lazy } from "react";
 import { Loading } from "../components/Suspense.tsx";
 import Layout from "../components/Layout.tsx";
+import { ToastContainer } from "react-toastify";
 
 const Dashboard = lazy(() => import("./Dashboard.tsx"));
 const Sells = lazy(() => import("./Sells.tsx"));

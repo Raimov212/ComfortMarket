@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   UserSvg,
@@ -7,9 +7,11 @@ import {
   PhoneSvg,
 } from "../../assets/icons/RegisterSvgIcons";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { userStatus } from "../../redux/userSlice";
+import { getGoodsApi } from "../../api/goodsApi";
+import { ToastContainer, toast } from "react-toastify";
 
 interface FormItem {
   fullName: string;
@@ -28,9 +30,6 @@ interface ModalProps {
 }
 
 const Register = () => {
-  //Errors
-  const [error, setError] = useState<string | null>("");
-
   const dispatch = useDispatch();
 
   //LANGUAGE
@@ -70,43 +69,69 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleForm = async (e: SyntheticEvent): Promise<void> => {
+  const handleForm = async (
+    e: SyntheticEvent
+  ): Promise<string[] | string | number | undefined> => {
+    //return qilish kerak
     e.preventDefault();
 
     if (formData.fullName === "") {
-      return setError(t("signUpError.fullNameError"));
+      return toast.error(t("signUpError.fullNameError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (formData.userName === "") {
-      return setError(t("signUpError.phoneNumberError"));
+      return toast.error(t("signUpError.phoneNumberError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (formData.userName.length < 13) {
-      return setError(t("signUpError.phoneNumberLengthError"));
+      return toast.error(t("signUpError.phoneNumberLengthError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (formData.password === "") {
-      return setError(t("signUpError.passwordError"));
+      return toast.error(t("signUpError.passwordError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (confirmPassword === "") {
-      return setError(t("signUpError.confirmPassword"));
+      return toast.error(t("signUpError.confirmPassword"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (formData.password !== confirmPassword) {
-      return setError(t("signUpError.confirmPasswordCorrectPasswordError"));
+      return toast.error(t("signUpError.confirmPasswordCorrectPasswordError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     }
 
     const params = {
+      fullName: formData.fullName,
       userName: formData.userName,
       password: formData.password,
       action: "signup",
     };
 
-    const response: AxiosResponse = await axios.post(
-      "../php/checkLogin.php",
+    const response: AxiosResponse = await getGoodsApi.post(
+      "/checkLogin.php",
       params
     );
 
-    console.log("chekLogin", response);
+    console.log("checkLogin", response);
 
     if (response.data === 3) {
-      setAlreadyUserName(!alreadyUserName);
-      setError(t("signUp.alreadyUser"));
+      toast.error(t("signUp.alreadyUser"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else {
       try {
-        const response: AxiosResponse = await axios.post(
-          "../php/userAddToBase.php",
+        console.log(formData);
+
+        const response: AxiosResponse = await getGoodsApi.post(
+          "/userAddToBase.php",
           formData
         );
 
@@ -121,19 +146,16 @@ const Register = () => {
 
         setShowAlert({ ...showAlert, success: !showAlert.success });
 
-        setError("");
-        navigate("/register/createShop");
         console.log("CreateUser", response);
+        navigate("/");
       } catch (error) {
         setShowAlert({ ...showAlert, error: !showAlert.error });
         console.log(error);
       }
-
-      console.log(formData);
     }
   };
 
-  console.log("alreadyUserName", alreadyUserName);
+  // console.log("alreadyUserName", alreadyUserName);
 
   return (
     <div className="w-full h-full flex flex-col items-center mt-28 ">
@@ -298,13 +320,13 @@ const Register = () => {
                 <EyeSvg />
               </div>
             </div>
-            <p className="text-red-700">{error}</p>
             <button
               type="submit"
               className="w-[90%] h-10 text-md text-white rounded-sm bg-secondary "
             >
               {t("signUp.sign")}
             </button>
+            <ToastContainer />
           </form>
         </div>
       </div>

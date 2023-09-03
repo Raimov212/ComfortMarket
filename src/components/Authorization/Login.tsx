@@ -6,6 +6,8 @@ import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "../../hook";
 import { goodsData } from "../../redux/todoSlice";
 import { userData } from "../../redux/userSlice";
+import { getGoodsApi } from "../../api/goodsApi";
+import { ToastContainer, toast } from "react-toastify";
 
 type FormItem = {
   userName: string;
@@ -14,7 +16,6 @@ type FormItem = {
 
 const Login = () => {
   //Errors
-  const [error, setError] = useState<String | null>("");
 
   //LANGUAGE
   const {
@@ -43,30 +44,34 @@ const Login = () => {
     e.preventDefault();
 
     if (formData.userName.length < 12) {
-      return setError(t("signUpError.phoneNumberError"));
+      return toast.error(t("signUpError.phoneNumberLengthError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
+    } else if (formData.userName === "") {
+      return toast.error(t("signUpError.phoneNumberError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     } else if (formData.password === "") {
-      return setError(t("signUpError.passwordError"));
+      return toast.error(t("signUpError.passwordError"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      });
     }
 
-    setFormData({
-      ...formData,
-      userName: "",
-      password: "",
-    });
-
-    navigate("/home");
-
     try {
-      const response: AxiosResponse = await axios.post(
-        "../php/checkLoginPassword.php",
+      const response: AxiosResponse = await getGoodsApi.post(
+        "/checkLoginPassword.php",
         formData
       );
 
       console.log("response", response);
+      console.log("formData", formData);
 
       const userId: string = response.data[0].userId;
 
-      const goods: AxiosResponse = await axios.post("../php/goods.php", {
+      const goods: AxiosResponse = await getGoodsApi.post("/goods.php", {
         userId: userId,
       });
 
@@ -78,20 +83,24 @@ const Login = () => {
       if (response.data.length) {
         navigate("/home");
       } else {
-        setError(t("errorLogin"));
+        return toast.error(t("errorLogin"), {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "foo-bar",
+        });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("error message: ", error.message);
         return error.message;
       } else {
-        setError(t("errorLogin"));
+        toast.error(t("errorLogin"), {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "foo-bar",
+        });
         console.log("unexpected error: ", error);
         return "An unexpected error occurred";
       }
     }
-
-    setError("");
   };
   //Modal
 
@@ -134,7 +143,6 @@ const Login = () => {
               <input
                 type="tel"
                 name="userName"
-                pattern="[\+][0-9]{12}"
                 className="w-[90%] border-b-2 outline-none pl-10 pb-2 text-base font-normal h-10"
                 placeholder={t("loginIn.inputNumber") as string}
                 value={formData.userName}
@@ -165,13 +173,13 @@ const Login = () => {
                 <EyeSvg />
               </div>
             </div>
-            <p className="text-red-700">{error}</p>
             <button
               type="submit"
-              className="w-[90%] h-10 text-md text-white rounded-sm bg-secondary "
+              className="w-[90%] h-10 text-md text-white rounded-sm bg-secondary mt-8"
             >
               {t("loginIn.login")}
             </button>
+            <ToastContainer />
           </form>
         </div>
       </div>

@@ -1,9 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../hook";
+import { useDispatch } from "react-redux";
+import { userData, userStatus } from "../../redux/userSlice";
+import { goodsData } from "../../redux/todoSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state);
   // console.log(JSON.parse(localStorage.getItem("category") || ""));
+
+  const dispatch = useDispatch();
 
   //language
   const {
@@ -16,6 +23,10 @@ const Navbar = () => {
     const storageLanguage = JSON.stringify(language);
     changeLanguage(language);
     localStorage.setItem("language", storageLanguage);
+  };
+
+  const handleCLosePage = () => {
+    navigate("/");
   };
 
   localStorage.setItem("category", JSON.stringify(t("category.dashboard")));
@@ -34,7 +45,7 @@ const Navbar = () => {
       <div className="flex-[3] flex justify-end mr-4 gap-2 items-center">
         <div
           className="w-6 h-6 rounded-full border-2 cursor-pointer"
-          onClick={() => navigate("/")}
+          onClick={handleCLosePage}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path

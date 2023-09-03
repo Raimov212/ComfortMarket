@@ -1,14 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAction } from "@reduxjs/toolkit";
 
 type userDataProps = {
   userId: string;
   fullName: string;
   status: string;
+  parentId: string;
 };
 
 type userLocationProps = {
-  shopId: string;
-  shopName: string;
+  id: string;
+  premiseName: string;
   address: string;
 };
 
@@ -24,6 +25,8 @@ const initialState: UserState = {
   statusProps: "",
 };
 
+const clearAction = createAction("clear");
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -37,7 +40,15 @@ const userSlice = createSlice({
     userStatus: (state, action: PayloadAction<string>) => {
       state.statusProps = action.payload;
     },
+    // clearAllUser(state, action): never[] | undefined {
+    //   return [];
+    // },
   },
+  // extraReducers: (builder) => {
+  //   builder.addCase(clearAllUser, () => {
+  //     return;
+  //   });
+  // },
 });
 
 export const { userData, userStatus } = userSlice.actions;
