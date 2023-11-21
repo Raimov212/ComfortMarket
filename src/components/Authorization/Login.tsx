@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/icons/LoginSvgIcons";
+import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/icons1/LoginSvgIcons";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "../../hook";
@@ -43,6 +43,8 @@ const Login = () => {
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault();
 
+    navigate("/home");
+
     if (formData.userName.length < 12) {
       return toast.error(t("signUpError.phoneNumberLengthError"), {
         position: toast.POSITION.TOP_RIGHT,
@@ -66,6 +68,8 @@ const Login = () => {
         formData
       );
 
+      console.log("checklogin Response", response);
+
       // console.log("response", response);
       // console.log("formData", formData);
 
@@ -81,7 +85,7 @@ const Login = () => {
       console.log("goods", goods);
 
       if (response.data.length) {
-        navigate("/home");
+        navigate("/home/goods");
       } else {
         return toast.error(t("errorLogin"), {
           position: toast.POSITION.TOP_RIGHT,

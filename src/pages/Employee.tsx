@@ -1,4 +1,4 @@
-import { CreateUser, Search } from "../assets/icons/TableIcon";
+import { CreateUser, Search } from "../assets/icons1/TableIcon";
 import EmployeeItem from "../components/Employee";
 
 const Employee = () => {

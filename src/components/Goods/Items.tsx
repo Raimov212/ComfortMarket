@@ -4,7 +4,7 @@ import {
   OneRightAngle,
   TwoLeftAngle,
   TwoRightAngle,
-} from "../../assets/icons/paginationIcon";
+} from "../../assets/icons1/paginationIcon";
 import { AllData, Data } from "./goods";
 import { useTranslation } from "react-i18next";
 

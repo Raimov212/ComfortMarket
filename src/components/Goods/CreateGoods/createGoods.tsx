@@ -1,16 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
-import { CreateGoodsType } from "./createGoodsType";
+import {
+  CreateGoodsType,
+  CreateGoodsTypeData,
+  GoodsCategoryAndWhereIdType,
+} from "./createGoodsType";
 import { getGoodsApi } from "../../../api/goodsApi";
 import { useAppSelector } from "../../../hook";
 import { t } from "i18next";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosResponse } from "axios";
-
-interface GoodsCategoryAndWhereIdType {
-  [key: string]: string;
-  id: string;
-  name: string;
-}
+import { ToastSuccess } from "../../../pages/Goods";
 
 const CreateGoods: React.FC<CreateGoodsType> = ({
   setOpenCreateGoodsProps,
@@ -20,16 +19,20 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
   const goodsCategory = useAppSelector((state) => state.goods.goodsCategory[0]);
   const goodsLocation = useAppSelector((state) => state.goods.goodsLocation[0]);
 
-  const [createGoodsInput, setCreateGoodsInput] = useState({
-    userId: userID,
-    pUserId: parentID,
-    categoryId: "",
-    name: "",
-    amount: "",
-    article: "",
-    barCode: "",
-    whereId: "",
-  });
+  const [createGoodsInput, setCreateGoodsInput] = useState<CreateGoodsTypeData>(
+    {
+      userId: userID,
+      pUserId: parentID,
+      categoryId: "",
+      name: "",
+      count: "",
+      amount: "",
+      article: "",
+      barCode: "",
+      whereId: "",
+      premiseId: "",
+    }
+  );
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +55,13 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
     setCreateGoodsInput({
       ...createGoodsInput,
       whereId: e.target.value,
+    });
+  };
+
+  const handleSelectPremiseType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCreateGoodsInput({
+      ...createGoodsInput,
+      premiseId: e.target.value,
     });
   };
 
@@ -107,15 +117,21 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
         className: "foo-bar",
       });
     }
-    setOpenCreateGoodsProps((prev) => !prev);
-    const addToBaseGoods: AxiosResponse<number[], number | null> =
-      await getGoodsApi.post("/goodsAddToBase.php", createGoodsInput);
 
-    if (addToBaseGoods.data[0] === 0) {
+    const addToBaseGoods: AxiosResponse<number | null | undefined> =
+      await getGoodsApi.post("/invoice.php", createGoodsInput);
+
+    if (addToBaseGoods.data === 0) {
       toast.success(createGoodsInput.name + t("goods.createGoodsSuccess"), {
         position: toast.POSITION.TOP_RIGHT,
         className: "foo-bar",
       });
+
+      
+
+      setTimeout(() => {
+        setOpenCreateGoodsProps((prev) => !prev);
+      }, 3000);
     } else {
       toast.error(t("goods.createGoodsError"), {
         position: toast.POSITION.TOP_RIGHT,
@@ -123,14 +139,13 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
       });
     }
 
-    console.log("addToBaseGoodsData", addToBaseGoods.data[0]);
     console.log("addToBaseGoods", addToBaseGoods);
 
     // console.log(createGoodsInput);
   };
 
   return (
-    <div className=" fixed top-10 left-[25%] bg-primary w-[100vh] h-[80vh] overflow-hidden z-10 rounded-xl">
+    <div className="overflow-y-scroll ease-out pb-4 fixed left-[25%] bg-primary w-[100vh] h-[80vh] overflow-hidden z-10 rounded-xl">
       <div className="p-4 text-white">{t("goods.createGoodsModalPage")}</div>
       <form
         onSubmit={createGoodsForm}
@@ -172,6 +187,15 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
         />
         <input
           type="text"
+          name="count"
+          className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
+          placeholder={t("goods.createPremise.count") as string}
+          value={createGoodsInput.count}
+          autoComplete="on"
+          onChange={handleInputChange}
+        />
+        <input
+          type="text"
           name="article"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.article") as string}
@@ -203,6 +227,24 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
               </option>
             );
           })}
+        </select>
+        <select
+          className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
+          name="categoryId"
+          onChange={handleSelectPremiseType}
+        >
+          <option className="text-gray-500" value="0">
+            shop
+          </option>
+          <option className="text-gray-500" value="1">
+            wareHouse
+          </option>
+          <option className="text-gray-500" value="2">
+            vitrine
+          </option>
+          <option className="text-gray-500" value="3">
+            marketPlace
+          </option>
         </select>
         <button
           type="submit"

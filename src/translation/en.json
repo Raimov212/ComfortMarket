@@ -62,7 +62,14 @@
         "article": "Article",
         "barCode": "Barcode",
         "whereCome": "Choose where the product comes from",
-        "createButton": "Add"
+        "createButton": "Add",
+        "count": "Count",
+        "premiseChooseType": "",
+        "chooseType": "Choose where the product",
+        "shop": "Shop",
+        "wareHouse": "Ware House",
+        "vitrine": "Vitrine",
+        "marketPlace": "Market Place"
       },
       "createGoodsSuccess": " added!",
       "createGoodsError": "This product is registered",

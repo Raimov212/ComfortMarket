@@ -58,7 +58,8 @@
         "article": "Артикул",
         "barCode": "Штрих-код",
         "whereCome": "Выберите, откуда родом товар",
-        "createButton": "Добавить"
+        "createButton": "Добавить",
+        "count": "Count"
       },
       "createGoodsSuccess": " Добавлен!",
       "createGoodsError": " Такой товар зарегистрирован!",

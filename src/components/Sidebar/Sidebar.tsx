@@ -9,7 +9,7 @@ import {
   ManagementIcons,
   ReviewsIcons,
   SellsIcons,
-} from "../../assets/icons/IconsSVG";
+} from "../../assets/icons1/IconsSVG";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../hook";
 

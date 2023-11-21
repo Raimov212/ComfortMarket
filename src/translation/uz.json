@@ -58,7 +58,8 @@
         "article": "Artikul",
         "barCode": "Shtrix kod",
         "whereCome": "Mahsulot kelgan joyni tanlang",
-        "createButton": "Qo'shish"
+        "createButton": "Qo'shish",
+        "count": "Count"
       },
       "createGoodsSuccess": " qo'shildi!",
       "createGoodsError": "Ushbu mahsulot ro'yxatdan o'tgan",

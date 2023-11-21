@@ -5,7 +5,7 @@ import {
   EyeSvg,
   LockSvg,
   PhoneSvg,
-} from "../../assets/icons/RegisterSvgIcons";
+} from "../../assets/icons1/RegisterSvgIcons";
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";

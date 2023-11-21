@@ -1,13 +1,26 @@
 import { useAppSelector } from "../hook";
-import { CreateUser } from "../assets/icons/TableIcon";
+import { CreateUser } from "../assets/icons1/TableIcon";
 import { useState } from "react";
 import GoodsItem from "../components/Goods/Items";
-// import { allDataGoods } from "../components/Goods/mock";
+import { allDataGoods } from "../components/Goods/mock";
 
-import { FilterIcon } from "../assets/icons/filter";
+import { FilterIcon } from "../assets/icons1/filter";
 import GoodsFilter from "../components/Goods/FilterGoods/Filter";
 import { AllData, GoodsProps } from "../components/Goods/goods";
 import CreateGoods from "../components/Goods/CreateGoods/createGoods";
+import { toast } from "react-toastify";
+import { t } from "i18next";
+
+export const ToastSuccess = () => {
+  return (
+    <>
+      {toast.success(t("goods.createGoodsSuccess"), {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "foo-bar",
+      })}
+    </>
+  );
+};
 
 const Goods = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -44,16 +57,6 @@ const Goods = () => {
       })
     );
   }
-
-  // useEffect(() => {
-  //   if (searchText) return;
-
-  //   return () => {
-  //     setSearchText("");
-  //   };
-  // }, [searchText]);
-
-  console.log("searchText", searchText);
 
   const handleFilter = (_: React.MouseEvent<HTMLDivElement>) => {
     if (openCreateGoods) {

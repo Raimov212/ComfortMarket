@@ -15,6 +15,8 @@ const GoodsFilter: React.FC<FilterProps> = ({
     wherecome: "",
   });
 
+  console.log("filterPage");
+
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setFilterInput({ ...filterInput, [e.target.name]: e.target.value });

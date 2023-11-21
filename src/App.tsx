@@ -3,10 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { Loading } from "./components/Suspense";
 import Error from "./components/Error/index.tsx";
 import CreateShop from "./components/Authorization/CreateShop.tsx";
-import { useAppSelector } from "./hook/index.ts";
-import { toast } from "react-toastify";
 
-const Home = lazy(() => import("./pages/home.tsx"));
+const Home = lazy(() => import("./pages/Home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
 const Register = lazy(() => import("./components/Authorization/Register.tsx"));
 //SIDEBAR
@@ -20,8 +18,6 @@ const Reviews = lazy(() => import("./pages/Reviews.tsx"));
 const Employee = lazy(() => import("./pages/Employee.tsx"));
 
 function App() {
-  const user = useAppSelector((state) => state.user.userData);
-
   return (
     <>
       <Routes>
@@ -66,6 +62,7 @@ function App() {
             }
           />
           <Route
+            index
             path="goods"
             element={
               <Suspense fallback={<Loading />}>
