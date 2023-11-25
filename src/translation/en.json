@@ -54,6 +54,7 @@
     "errorLogin": "The login or password was entered incorrectly!",
     "goods": {
       "createGoodsModalPage": "Adding a product",
+      "editGoodsModalPage": "Edit a product",
       "currentGoodsValue": "Current value",
       "createPremise": {
         "category": "Select a category",

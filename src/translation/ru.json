@@ -50,6 +50,7 @@
     "errorLogin": "Логин или пароль введен неверно!",
     "goods": {
       "createGoodsModalPage": "Добавление товара",
+      "editGoodsModalPage": "Редактировать продукт",
       "currentGoodsValue": "Current value",
       "createPremise": {
         "category": "Выберите категорию",

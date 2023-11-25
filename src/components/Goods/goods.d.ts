@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+import { EditGoodsTypeData } from "./EditGoods/editgoodsType";
+
 export type AllData = {
   [key: string]: string;
   amount: string;
@@ -14,9 +17,16 @@ export type AllData = {
   wherecome: string;
 };
 
+export type PaginationType = {
+  data: AllData[];
+  itemsPerPage: number;
+};
+
 export type Data = {
   data: AllData[];
   itemsPerPage: number;
+  setEditGoodsInput: Dispatch<SetStateAction<EditGoodsTypeData>>;
+  setOpenEditGoods: Dispatch<SetStateAction<Boolean>>;
 };
 
 export type GoodsProps = {

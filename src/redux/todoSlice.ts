@@ -1,47 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GoodsState } from "./todoSliceType";
 
-type AllGods = {
-  article?: string;
-  barCode?: string;
-  category?: string;
-  categoryId: string;
-  id: string;
-  name?: string;
-  pictureUrl?: HTMLImageElement | null;
-  shopId: string;
-  whereId: string;
-};
-
-type GoodsCategory = {
-  [x: string]: any;
-  count?: string;
-  id: string;
-  name?: string;
-};
-
-type GoodsData = {
-  amount?: string;
-  count?: string;
-  dateAt: string;
-  goodsId?: string;
-  id: string;
-  sellAmount?: string | null;
-  shopId: string;
-};
-
-type GoodsLocation = {
-  [x: string]: any;
-  id: string;
-  name: string;
-};
-
-type GoodsState = {
-  goodsCount: number | null;
-  goods: AllGods[];
-  goodsCategory: GoodsCategory[];
-  goodsData: GoodsData[];
-  goodsLocation: GoodsLocation[];
-};
+// export const getAllGoodsApi = createAsyncThunk(
+//   "getAllGoods",
+//   async ()=>{
+//     const
+//   }
+// )
 
 const initialState: GoodsState = {
   goodsCount: 0,

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar.tsx";
 import Navbar from "../components/Navbar/Navbar.tsx";
 import { Suspense, lazy } from "react";
@@ -23,7 +23,7 @@ const Home = () => {
           <Sidebar />
           <div className="flex-1  h-full">
             <Layout>
-              <Routes>
+              {/* <Routes>
                 <Route
                   path="/dashboard"
                   element={
@@ -97,7 +97,8 @@ const Home = () => {
                     </Suspense>
                   }
                 />
-              </Routes>
+              </Routes> */}
+              <Outlet />
             </Layout>
           </div>
         </div>

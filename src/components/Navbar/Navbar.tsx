@@ -1,16 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hook";
-import { useDispatch } from "react-redux";
-import { userData, userStatus } from "../../redux/userSlice";
-import { goodsData } from "../../redux/todoSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state);
-  // console.log(JSON.parse(localStorage.getItem("category") || ""));
-
-  const dispatch = useDispatch();
 
   //language
   const {

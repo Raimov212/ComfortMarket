@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState, useEffect } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   UserSvg,
@@ -50,7 +50,7 @@ const Register = () => {
     confirmPassword: false,
   });
 
-  const [alreadyUserName, setAlreadyUserName] = useState<boolean>(false);
+  const [alreadyUserName] = useState<boolean>(false);
 
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 

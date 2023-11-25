@@ -1,8 +1,8 @@
-import { GoodsProps } from "../goods";
+import { AllData, GoodsProps } from "../goods";
 import { Dispatch, SetStateAction } from "react";
 
 export type FilterProps = {
-  filterData: GoodsProps;
+  goods: AllData[];
   setSearchArrItemCategory: Dispatch<SetStateAction<string[] | undefined>>;
   setSearchText: Dispatch<React.SetStateAction<string>>;
 };

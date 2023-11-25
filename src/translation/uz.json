@@ -50,6 +50,7 @@
     "errorLogin": "Login yoki parol xato kiritildi!",
     "goods": {
       "createGoodsModalPage": "Mahsulotni qo'shish",
+      "editGoodsModalPage": "Mahsulotni tahrirlash",
       "currentGoodsValue": "Current value",
       "createPremise": {
         "category": "Kategoriyani tanlang",

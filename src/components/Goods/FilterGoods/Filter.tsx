@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import { FilterProps } from "./filterType";
+import { GoodsProps } from "../goods";
 
 const GoodsFilter: React.FC<FilterProps> = ({
-  filterData,
+  goods,
   setSearchArrItemCategory,
   setSearchText,
 }): JSX.Element => {
@@ -14,6 +15,15 @@ const GoodsFilter: React.FC<FilterProps> = ({
     barCode: "",
     wherecome: "",
   });
+
+  const filterData: GoodsProps = {
+    categoryFilter: [...new Set(goods?.map((n) => n.category))],
+    nameFilter: [...new Set(goods?.map((n) => n.name))],
+    amountFilter: [...new Set(goods?.map((n) => n.amount))],
+    articleFilter: [...new Set(goods?.map((n) => n.article))],
+    barCodeFilter: [...new Set(goods?.map((n) => n.barCode))],
+    wherecomeFilter: [...new Set(goods?.map((n) => n.wherecome))],
+  };
 
   console.log("filterPage");
 

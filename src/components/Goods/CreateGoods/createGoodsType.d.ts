@@ -22,4 +22,7 @@ export type CreateGoodsTypeData = {
 
 export type CreateGoodsType = {
   setOpenCreateGoodsProps: Dispatch<SetStateAction<Boolean>>;
+  createGoodsInput: CreateGoodsTypeData;
+  setCreateGoodsInput: Dispatch<SetStateAction<CreateGoodsTypeData>>;
+  createGoodsForm: (e: { preventDefault: () => void }) => void;
 };

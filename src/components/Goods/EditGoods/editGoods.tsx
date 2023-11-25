@@ -1,61 +1,69 @@
-import { useCallback, useEffect } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import {
-  CreateGoodsType,
+  EditGoodsType,
+  EditGoodsTypeData,
   GoodsCategoryAndWhereIdType,
-} from "./createGoodsType";
+} from "./editgoodsType";
 import { useAppSelector } from "../../../hook";
 import { t } from "i18next";
 import { ToastContainer } from "react-toastify";
 import { IoClose } from "react-icons/io5";
 
-const CreateGoods: React.FC<CreateGoodsType> = ({
-  setOpenCreateGoodsProps,
-  createGoodsInput,
-  setCreateGoodsInput,
-  createGoodsForm,
+const EditGoods: React.FC<EditGoodsType> = ({
+  setOpenEditGoodsProps,
+  editGoodsInput,
+  setEditGoodsInput,
+  editGoodsForm,
 }): JSX.Element => {
   const goodsCategory = useAppSelector((state) => state.goods.goodsCategory[0]);
   const goodsLocation = useAppSelector((state) => state.goods.goodsLocation[0]);
 
+  const [editImageUpload, setEditImageUpload] = useState<File | null>(null);
+
+  console.log("editGoodsInput", editGoodsInput);
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCreateGoodsInput({
-        ...createGoodsInput,
+      setEditGoodsInput({
+        ...editGoodsInput,
         [e.target.name]: e.target.value,
       });
     },
-    [createGoodsInput]
+    [editGoodsInput]
   );
 
   const handleSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCreateGoodsInput({
-      ...createGoodsInput,
+    setEditGoodsInput({
+      ...editGoodsInput,
       categoryId: e.target.value,
     });
   };
 
   const handleSelectWhereCome = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCreateGoodsInput({
-      ...createGoodsInput,
+    setEditGoodsInput((prev: EditGoodsTypeData) => ({
+      ...prev,
       whereId: e.target.value,
-    });
+    }));
   };
 
   const handleSelectPremiseType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCreateGoodsInput({
-      ...createGoodsInput,
+    setEditGoodsInput({
+      ...editGoodsInput,
       premiseId: e.target.value,
     });
   };
 
-  console.log("createGoodsInput", createGoodsInput);
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setEditImageUpload(e.target.files[0]);
+    }
+  };
 
   useEffect(() => {
     const handleKeydown = (event: { key: string | undefined }) => {
       if (event.key == undefined) {
         return;
       } else if (event.key === "Escape") {
-        setOpenCreateGoodsProps((prev) => !prev);
+        setOpenEditGoodsProps((prev: boolean) => !prev);
       } else {
         return;
       }
@@ -68,18 +76,18 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
   }, []);
 
   return (
-    <div className="overflow-y-scroll ease-out pb-4 fixed left-[25%] bg-primary w-[100vh] h-[80vh] overflow-hidden z-10 rounded-xl">
+    <div className="pb-4 fixed left-[25%] bg-primary w-[100vh] h-[80vh] overflow-hidden z-10 rounded-xl">
       <div className="flex items-center justify-between">
-        <div className="p-4 text-white">{t("goods.createGoodsModalPage")}d</div>
+        <div className="p-4 text-white">{t("goods.editGoodsModalPage")}d</div>
         <div
-          onClick={() => setOpenCreateGoodsProps(false)}
+          onClick={() => setOpenEditGoodsProps(false)}
           className="text-white mr-4 cursor-pointer text-2xl"
         >
           <IoClose />
         </div>
       </div>
       <form
-        onSubmit={createGoodsForm}
+        onSubmit={editGoodsForm}
         className="flex flex-col gap-4 items-center pt-10"
       >
         <select
@@ -103,16 +111,16 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
           name="name"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.name") as string}
-          value={createGoodsInput.name}
+          value={editGoodsInput.name}
           autoComplete="on"
           onChange={handleInputChange}
         />
-        <input
+        {/* <input
           type="text"
           name="amount"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.amount") as string}
-          value={createGoodsInput.amount}
+          value={editGoodsInput.amount}
           autoComplete="on"
           onChange={handleInputChange}
         />
@@ -121,16 +129,16 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
           name="count"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.count") as string}
-          value={createGoodsInput.count}
+          value={editGoodsInput.count}
           autoComplete="on"
           onChange={handleInputChange}
-        />
+        /> */}
         <input
           type="text"
           name="article"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.article") as string}
-          value={createGoodsInput.article}
+          value={editGoodsInput.article}
           autoComplete="on"
           onChange={handleInputChange}
         />
@@ -139,9 +147,18 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
           name="barCode"
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
           placeholder={t("goods.createPremise.barCode") as string}
-          value={createGoodsInput.barCode}
+          value={editGoodsInput.barCode}
           autoComplete="on"
           onChange={handleInputChange}
+        />
+        <input
+          type="file"
+          name="pictureUrl"
+          className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
+          placeholder={t("goods.createPremise.barCode") as string}
+          value={editGoodsInput.pictureUrl}
+          autoComplete="on"
+          onChange={handleImageChange}
         />
         <select
           className="outline-none border-2 border-primary rounded-md p-2 visible focus:border-secondary w-[25rem]"
@@ -189,4 +206,4 @@ const CreateGoods: React.FC<CreateGoodsType> = ({
   );
 };
 
-export default CreateGoods;
+export default EditGoods;

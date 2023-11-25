@@ -7,8 +7,13 @@ import {
 } from "../../assets/icons1/paginationIcon";
 import { AllData, Data } from "./goods";
 import { useTranslation } from "react-i18next";
+import { FC } from "react";
 
-const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
+const GoodsItem: FC<Data> = ({
+  data,
+  setEditGoodsInput,
+  setOpenEditGoods,
+}): JSX.Element => {
   const itemsPerPage: number = 10;
   const jumpArr: number[] = [];
 
@@ -75,7 +80,22 @@ const GoodsItem: React.FC<Data> = ({ data }): JSX.Element => {
               <td>{item.wherecome}</td>
               <td>{item.pictureUrl}</td>
               <td>
-                <div className="flex items-center justify-center">
+                <div
+                  onClick={() => {
+                    setOpenEditGoods(true),
+                      setEditGoodsInput((prev) => ({
+                        ...prev,
+                        id: item.id,
+                        article: item.article,
+                        name: item.name,
+                        barCode: item.barCode,
+                        // pictureUrl: item.pictureUrl,
+                        whereId: item.whereId,
+                        categoryId: item.categoryId,
+                      }));
+                  }}
+                  className="flex items-center justify-center"
+                >
                   <p className="text-[#FF6B55] cursor-pointer">edit</p>
                 </div>
               </td>
