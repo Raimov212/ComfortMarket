@@ -49,17 +49,17 @@ const GoodsItem: FC<Data> = ({
 
   return (
     <div className="h-full w-full">
-      <table>
+      <table className="table">
         <thead>
-          <tr className="hover:scale-100 bg-primary text-white hover:bg-primary hover:shadow-none">
+          <tr className="bg-base-200">
             <th>No</th>
             <th>Category</th>
             <th>Name</th>
             <th>Count</th>
-            <th>Amount</th>
-            <th>Article</th>
+            <th>Price</th>
+            {/* <th>Article</th> */}
             <th>Barcode</th>
-            <th>Where</th>
+            {/* <th>Where</th> */}
             <th>Picture</th>
             <th>Action</th>
           </tr>
@@ -74,13 +74,15 @@ const GoodsItem: FC<Data> = ({
               <td>{item.category}</td>
               <td>{item.name}</td>
               <td>{item.count}</td>
-              <td>{item.amount}</td>
-              <td>{item.article}</td>
-              <td>{item.barCode}</td>
-              <td>{item.wherecome}</td>
-              <td>{item.pictureUrl}</td>
+              <td>{item.price}</td>
+              {/* <td>{item.article}</td> */}
+              <td>{item.barcode}</td>
+              {/* <td>{item.wherecome}</td> */}
               <td>
-                <div
+                <img src={item.url} className="w-12 h-12 object-cover" />
+              </td>
+              <td>
+                <button
                   onClick={() => {
                     setOpenEditGoods(true),
                       setEditGoodsInput((prev) => ({
@@ -94,10 +96,10 @@ const GoodsItem: FC<Data> = ({
                         categoryId: item.categoryId,
                       }));
                   }}
-                  className="flex items-center justify-center"
+                  className="btn btn-square"
                 >
-                  <p className="text-[#FF6B55] cursor-pointer">edit</p>
-                </div>
+                  edit
+                </button>
               </td>
             </tr>
           ))}
@@ -105,9 +107,9 @@ const GoodsItem: FC<Data> = ({
       </table>
       <div className="flex justify-between p-2">
         <div>
-          <div className="text-primary flex items-center gap-1">
+          <div className="text-base-200 flex items-center gap-1">
             <div className="font-normal">{t("goods.currentGoodsValue")}:</div>
-            <div className="font-medium">{data.length}</div>
+            <div className="font-medium">{data?.length}</div>
           </div>
         </div>
         <div className="flex gap-2 h-full max-w-96 items-center">

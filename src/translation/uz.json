@@ -16,18 +16,19 @@
       "member": "Allaqachon a'zomisiz?",
       "signUp": "Ro'yxatdan o'tish",
       "inputFullName": "To'liq ism",
+      "inputUserName": "Foydalanuvchi nomi",
       "inputNumber": "Telefon raqami",
       "inputPassword": "Parol",
       "inputConfirmPassword": "Parolni tasdiqlang",
       "sign": "Ro'yxatdan o'tish",
       "errorLogin": {
         "title": "Tizimda xatolik",
-        "span": "Administrator bilan bog'laning!"
+        "span": "Adminstrator bilan bo'glaning!"
       },
       "success": {
         "title": "Muvoffaqiyatli bajarildi!"
       },
-      "alreadyUser": "Bunday telefon raqam ro'yxatdan o'tgan"
+      "alreadyUser": "Bu foydalanuvchi oldin ro'yhatdan o'tgan"
     },
     "signUpError": {
       "fullNameError": "F.I.O bo'sh bo'lishi mumkin emas",

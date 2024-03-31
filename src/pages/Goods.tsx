@@ -1,290 +1,296 @@
-import { useAppDispatch, useAppSelector } from "../hook";
-import { CreateUser } from "../assets/icons1/TableIcon";
-import { useEffect, useState } from "react";
-import GoodsItem from "../components/Goods/Items";
-// import { allDataGoods } from "../components/Goods/mock";
+import { Key, useEffect, useState } from "react";
+import CreatePremise from "../components/Premise/createPremise";
+import { CreatePremiseType, DataType } from "../types/premiseTypes";
+import api from "../api";
 
-import { FilterIcon } from "../assets/icons1/filter";
-import GoodsFilter from "../components/Goods/FilterGoods/Filter";
-import { AllData } from "../components/Goods/goods";
-import CreateGoods from "../components/Goods/CreateGoods/createGoods";
-import { ToastContainer, toast } from "react-toastify";
-import { t } from "i18next";
-import { AxiosResponse } from "axios";
-import { getGoodsApi } from "../api/goodsApi";
-import { CreateGoodsTypeData } from "../components/Goods/CreateGoods/createGoodsType";
-import { EditGoodsTypeData } from "../components/Goods/EditGoods/editgoodsType";
-import EditGoods from "../components/Goods/EditGoods/editGoods";
-import { goodsData } from "../redux/todoSlice";
+import { Table } from "antd";
+import type { GetProp, TableProps } from "antd";
+import { columnsPremiseExtraProduct } from "../data/premiseTable";
+import { PremiseProducts } from "../types/premiseProductsTypes";
+import CreatePremiseProduct from "../components/Premise/createPremiseProduct";
+import TransferProduct from "../components/Premise/transferProduct";
+import { ProductsDataType } from "../types/productTypes";
 
-export const ToastSuccess = () => {
-  return (
-    <>
-      {toast.success(t("goods.createGoodsSuccess"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      })}
-    </>
-  );
+type TablePaginationConfig = Exclude<
+  GetProp<TableProps, "pagination">,
+  boolean
+>;
+// type TableRowSelection<T> = TableProps<T>["rowSelection"];
+
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Parameters<GetProp<TableProps, "onChange">>[1];
+}
+type ColumnsType<T> = TableProps<T>["columns"];
+
+export type PremiseTypes = {
+  [key: string]: {
+    id: string;
+    name: string;
+  };
+};
+
+const PremiseType: PremiseTypes = {
+  SHOP: {
+    id: "SHOP",
+    name: "Do'kon",
+  },
+  WAREHOUSE: {
+    id: "WAREHOUSE",
+    name: "Ombor",
+  },
 };
 
 const Goods = () => {
-  const allData = useAppSelector((state) => state.goods.goods[0]);
-  const goods = allData as unknown as AllData[];
-  const userID = useAppSelector((state) => state.user.userData[0].userId);
-  const parentID = useAppSelector((state) => state.user.userData[0].parentId);
-
-  const [searchText, setSearchText] = useState<string>("");
-  const [openFilter, setOpenFilter] = useState<Boolean>(false);
-  const [openCreateGoods, setOpenCreateGoods] = useState<Boolean>(false);
-  const [openEditGoods, setOpenEditGoods] = useState<Boolean>(false);
-  const [searchArrItemCategory, setSearchArrItemCategory] =
-    useState<string[]>();
-
-  const [createGoodsInput, setCreateGoodsInput] = useState<CreateGoodsTypeData>(
-    {
-      userId: userID,
-      pUserId: parentID,
-      categoryId: "",
-      name: "",
-      count: "",
-      amount: "",
-      article: "",
-      barCode: "",
-      whereId: "",
-      premiseId: "",
-    }
-  );
-
-  const [editGoodsInput, setEditGoodsInput] = useState<EditGoodsTypeData>({
-    userId: userID,
-    id: "",
-    categoryId: "",
-    name: "",
-    article: "",
-    barCode: "",
-    whereId: "",
-    pictureUrl: "",
+  const [data, setData] = useState<ProductsDataType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectProductId, setSelectProductId] = useState<number | null>();
+  const [successPremise, setSuccessPremise] = useState<boolean>(false);
+  const [selectPremise, setSelectPremise] = useState<DataType | undefined>();
+  const [selectPremiseId, setSelectPremiseId] = useState<number | undefined>();
+  const [selectTransfer, setSelectTransfer] =
+    useState<ProductsDataType | null>();
+  const [tableParams, setTableParams] = useState<TableParams>({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+      pageSizeOptions: [5, 7, 10, 15, 20],
+      showSizeChanger: true,
+    },
   });
 
-  const getAllData = () => {
-    return goods;
+  console.log("tableParams", tableParams);
+
+  const [formData, setFormData] = useState<CreatePremiseType>({
+    name: "",
+    address: "",
+    type: PremiseType.SHOP.id,
+  });
+
+  const [premiseProducts, setPremiseProducts] = useState<PremiseProducts>({
+    name: "",
+    barcode: "",
+    count: null,
+    price: null,
+    categoryId: 0,
+  });
+
+  const handleAddPremiseProduct = (key: React.Key) => {
+    const modal = document.getElementById("my_modal_5");
+    if ((modal as any).showModal) (modal as any).showModal();
+    setSelectProductId(Number(key));
   };
+  const handleUpdatePremiseProduct = (key: DataType) => {
+    const modal = document.getElementById("my_modal_4");
+    if ((modal as any).showModal) (modal as any).showModal();
+    setSelectPremise(key);
+  };
+
+  const columnsPremise: ColumnsType<DataType> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      render: (name) => `${name}`,
+      width: "32%",
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ["ascend"],
+    },
+    {
+      title: "Barcode",
+      dataIndex: "barcode",
+      width: "12%",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      width: "20%",
+    },
+    {
+      title: "Sana",
+      dataIndex: "createdAt",
+      width: "20%",
+    },
+    {
+      title: "Xodim",
+      dataIndex: "addedBy",
+      width: "20%",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      filters: [
+        { text: "SHOP", value: "SHOP" },
+        { text: "WAREHOUSE", value: "WAREHOUSE" },
+      ],
+      onFilter: (value: boolean | Key, record: DataType) =>
+        record.type.indexOf(value as string) === 0,
+      width: "20%",
+    },
+    {
+      title: "operation",
+      dataIndex: "operation",
+      render: (_, record: DataType) => (
+        <div className="flex gap-2">
+          <button
+            className="btn btn-success"
+            onClick={() => handleAddPremiseProduct(record.id)}
+          >
+            Add
+          </button>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleUpdatePremiseProduct(record)}
+          >
+            Edit
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   useEffect(() => {
-    getAllData();
-  }, [goods]);
-
-  // const goods = allDataGoods as AllData[];
-
-  function search(rows: AllData[]) {
-    return rows.filter((row: AllData) =>
-      searchArrItemCategory?.some((item) => {
-        if (row[item] !== null) {
-          return (
-            row[item]
-              .toString()
-              .toLowerCase()
-              .indexOf(searchText.toLowerCase()) > -1
-          );
-        }
-      })
-    );
-  }
-
-  const handleFilter = (_: React.MouseEvent<HTMLDivElement>) => {
-    if (openCreateGoods) {
-      setOpenCreateGoods(!openCreateGoods);
-    }
-    setOpenFilter(!openFilter);
-  };
-
-  const handleCreateGoods = (_: React.MouseEvent<HTMLDivElement>) => {
-    if (openFilter) {
-      setOpenFilter(!openFilter);
-    }
-    setOpenCreateGoods(!openCreateGoods);
-  };
-
-  const createGoodsForm = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (createGoodsInput.categoryId === "") {
-      return toast.error(t("goods.createPremiseError.category"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (createGoodsInput.name === "") {
-      return toast.error(t("goods.createPremiseError.name"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (createGoodsInput.amount === "") {
-      return toast.error(t("goods.createPremiseError.amount"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (createGoodsInput.article === "") {
-      return toast.error(t("goods.createPremiseError.article"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (createGoodsInput.barCode === "") {
-      return toast.error(t("goods.createPremiseError.barCode"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (createGoodsInput.whereId === "") {
-      return toast.error(t("goods.createPremiseError.whereCome"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    }
-
-    const addToBaseGoods: AxiosResponse<number | null | undefined> =
-      await getGoodsApi.post("/invoice.php", createGoodsInput);
-
-    if (addToBaseGoods.data === 0) {
-      toast.success(createGoodsInput.name + t("goods.createGoodsSuccess"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-
-      setCreateGoodsInput((prev) => ({
-        ...prev,
-        amount: "",
-        article: "",
-        barCode: "",
-        categoryId: "",
-        count: "",
-        name: "",
-        whereId: "",
-        premiseId: "",
-      }));
-
-      setTimeout(() => {
-        setOpenCreateGoods(false);
-      }, 3000);
-    } else {
-      toast.error(t("goods.createGoodsError"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    }
-
-    console.log("addToBaseGoods", addToBaseGoods);
-
-    // console.log(createGoodsInput);
-  };
-
-  const getGoods = () => {
-    return goods;
-  };
-
-  const editGoodsForm = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (editGoodsInput.name === "") {
-      return toast.error(t("goods.createPremiseError.name"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (editGoodsInput.article === "") {
-      return toast.error(t("empty article"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (editGoodsInput.barCode === "") {
-      return toast.error(t("goods.createPremiseError.barCode"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    }
-
-    console.log("editGoodsInput", editGoodsInput);
-
-    try {
-      const editBaseGoods = await getGoodsApi.post(
-        "/goodsEdit.php",
-        editGoodsInput
-      );
-      // setEditData(editBaseGoods.data[1]);
-
-      console.log("editBaseGoods", editBaseGoods);
-      if (editBaseGoods.data[0] === 0) {
-        toast.success(createGoodsInput.name + t("goods.createGoodsSuccess"), {
-          position: toast.POSITION.TOP_RIGHT,
-          className: "foo-bar",
+    const getPremiseData = async () => {
+      setLoading(false);
+      await api
+        .get("/products", {
+          // params: {
+          //   page: tableParams?.pagination?.current,
+          //   size: tableParams?.pagination?.pageSize,
+          // },
+        })
+        .then(({ data }) => {
+          console.log("data", data);
+          setData(data);
+          setLoading(false);
+          setTableParams({
+            ...tableParams,
+            pagination: {
+              ...tableParams.pagination,
+              total: data?.length,
+            },
+          });
         });
+    };
 
-        getGoods();
+    getPremiseData();
 
-        setCreateGoodsInput((prev) => ({
-          ...prev,
-          amount: "",
-          article: "",
-          barCode: "",
-          categoryId: "",
-          count: "",
-          name: "",
-          whereId: "",
-          premiseId: "",
-        }));
+    setTimeout(() => {
+      setSuccessPremise(false);
+    }, 1000);
+  }, [
+    tableParams.pagination?.current,
+    tableParams.pagination?.pageSize,
+    successPremise,
+  ]);
 
-        setTimeout(() => {
-          setOpenEditGoods(false);
-        }, 3000);
-      } else {
-        toast.error(t("goods.createGoodsError"), {
-          position: toast.POSITION.TOP_RIGHT,
-          className: "foo-bar",
-        });
-      }
-    } catch (error) {
-      console.log(error);
+  const handleTableChange: TableProps["onChange"] = (
+    pagination,
+    filters,
+    sorter
+  ) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
     }
   };
+
+  // const handleSelectPremiseId = (record: any) => {
+
+  //   return record.id;
+  //   // console.log("record", record);
+  // };
+
+  // const rowSelection: TableRowSelection<DataType> = {
+  //   onChange: () => {},
+  //   onSelect: (record) => {
+  //   },
+  //   checkStrictly: false,
+  //   // onSelectAll: (selected, selectedRows, changeRows) => {
+  //   //   console.log(selected, selectedRows, changeRows);
+  //   // },
+  // };
 
   return (
-    <div className="flex flex-col box-border p-2 gap-1 w-[99%] h-full bg-white m-2 ">
-      <div className="border-b-2 border-one w-[98%] mt-2 text-2xl text-one">
-        Goods
-      </div>
-      <div className="flex w-full pr-6 items-center justify-end">
-        <div onClick={handleFilter} className="cursor-pointer ">
-          <FilterIcon />
+    <div className="p-4">
+      <button
+        className="btn mb-2 ml-[86%]"
+        onClick={() => {
+          const modal = document.getElementById("my_modal_4");
+          if ((modal as any).showModal) (modal as any).showModal();
+        }}
+      >
+        create new premise
+      </button>
+      <dialog id="my_modal_4" className="modal">
+        <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
+          <CreatePremise
+            PremiseType={PremiseType}
+            formData={formData}
+            setFormData={setFormData}
+            selectPremise={selectPremise}
+            setSuccessPremise={setSuccessPremise}
+          />
+          <div className="modal-action absolute bottom-6 right-10">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
         </div>
-        <div onClick={handleCreateGoods} className=" cursor-pointer ">
-          <CreateUser />
+      </dialog>
+      <dialog id="my_modal_5" className="modal">
+        <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
+          <CreatePremiseProduct
+            id={Number(selectProductId)}
+            setPremiseProducts={setPremiseProducts}
+            premiseProducts={premiseProducts}
+          />
+          <div className="modal-action absolute bottom-6 right-10">
+            <form method="dialog">
+              <button className="btn" onClick={() => setSelectProductId(null)}>
+                Close
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-      {openFilter && (
-        <GoodsFilter
-          goods={goods}
-          setSearchArrItemCategory={setSearchArrItemCategory}
-          setSearchText={setSearchText}
-        />
-      )}
-      {openCreateGoods && (
-        <CreateGoods
-          setOpenCreateGoodsProps={setOpenCreateGoods}
-          createGoodsInput={createGoodsInput}
-          setCreateGoodsInput={setCreateGoodsInput}
-          createGoodsForm={createGoodsForm}
-        />
-      )}
-      {openEditGoods && (
-        <EditGoods
-          setOpenEditGoodsProps={setOpenEditGoods}
-          editGoodsInput={editGoodsInput}
-          setEditGoodsInput={setEditGoodsInput}
-          editGoodsForm={editGoodsForm}
-        />
-      )}
-      <GoodsItem
-        data={searchText !== "" ? search(goods) : goods}
-        itemsPerPage={0}
-        setEditGoodsInput={setEditGoodsInput}
-        setOpenEditGoods={setOpenEditGoods}
+      </dialog>
+      <dialog id="my_modal_6" className="modal">
+        <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
+          <TransferProduct
+            selectTransfer={selectTransfer}
+            selectProductId={Number(selectProductId)}
+            selectPremiseId={selectPremiseId}
+          />
+          <div className="modal-action absolute bottom-6 right-10">
+            <form method="dialog">
+              <button className="btn" onClick={() => setSelectTransfer(null)}>
+                Close
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      <Table
+        columns={columnsPremise}
+        rowKey={(record) => record.id}
+        dataSource={data}
+        // rowSelection={{ ...rowSelection }}
+        // pagination={{
+        //   pageSizeOptions: ["10", "20"],
+        //   showSizeChanger: false,
+        //   // pageSize: data?.length,
+        //   total: data?.length * 5,
+        // }}
+        pagination={tableParams.pagination}
+        loading={loading}
+        onChange={handleTableChange}
       />
-      <ToastContainer />
     </div>
   );
 };

@@ -34,6 +34,8 @@ export type GoodsLocation = {
 };
 
 export type GoodsState = {
+  isLoading: boolean;
+  error: string;
   goodsCount: number | null;
   goods: AllGods[];
   goodsCategory: GoodsCategory[];

@@ -3,7 +3,7 @@ import {
   EditGoodsType,
   EditGoodsTypeData,
   GoodsCategoryAndWhereIdType,
-} from "./editgoodsType";
+} from "./editGoodsType";
 import { useAppSelector } from "../../../hook";
 import { t } from "i18next";
 import { ToastContainer } from "react-toastify";
@@ -18,7 +18,7 @@ const EditGoods: React.FC<EditGoodsType> = ({
   const goodsCategory = useAppSelector((state) => state.goods.goodsCategory[0]);
   const goodsLocation = useAppSelector((state) => state.goods.goodsLocation[0]);
 
-  const [editImageUpload, setEditImageUpload] = useState<File | null>(null);
+  const [_, setEditImageUpload] = useState<File | null>(null);
 
   console.log("editGoodsInput", editGoodsInput);
   const handleInputChange = useCallback(

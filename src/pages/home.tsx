@@ -1,18 +1,18 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar.tsx";
 import Navbar from "../components/Navbar/Navbar.tsx";
-import { Suspense, lazy } from "react";
-import { Loading } from "../components/Suspense.tsx";
+// import { Suspense, lazy } from "react";
+// import { Loading } from "../components/Suspense.tsx";
 import Layout from "../components/Layout.tsx";
 
-const Dashboard = lazy(() => import("./Dashboard.tsx"));
-const Sells = lazy(() => import("./Sells.tsx"));
-const Clients = lazy(() => import("./Clients.tsx"));
-const Goods = lazy(() => import("./Goods.tsx"));
-const Categories = lazy(() => import("./Categories.tsx"));
-const Management = lazy(() => import("./Management.tsx"));
-const Reviews = lazy(() => import("./Reviews.tsx"));
-const Employee = lazy(() => import("./Employee.tsx"));
+// const Dashboard = lazy(() => import("./Dashboard.tsx"));
+// const Sells = lazy(() => import("./Sells.tsx"));
+// const Clients = lazy(() => import("./Clients.tsx"));
+// const Goods = lazy(() => import("./Goods.tsx"));
+// const Categories = lazy(() => import("./Categories.tsx"));
+// const Management = lazy(() => import("./Management.tsx"));
+// const Reviews = lazy(() => import("./Reviews.tsx"));
+// const Employee = lazy(() => import("./Employee.tsx"));
 
 const Home = () => {
   return (

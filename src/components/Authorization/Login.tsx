@@ -1,20 +1,20 @@
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LockSvg, PhoneSvg, EyeSvg } from "../../assets/icons1/LoginSvgIcons";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
-import { useAppDispatch } from "../../hook";
-import { goodsData } from "../../redux/todoSlice";
-import { userData } from "../../redux/userSlice";
-import { getGoodsApi } from "../../api/goodsApi";
+import { useAppDispatch, useAppSelector } from "../../hook";
+import api from "../../api";
 import { ToastContainer, toast } from "react-toastify";
+import { getAllGoods } from "../../redux/todoSlice";
 
 type FormItem = {
-  userName: string;
+  username: string;
   password: string;
 };
 
 const Login = () => {
+  // const { error, isLoading } = useAppSelector((state) => state.goods);
   //Errors
 
   //LANGUAGE
@@ -36,21 +36,14 @@ const Login = () => {
   //CREATE FORM
   const [showPassword, setShowPassword] = useState<Boolean>(false);
   const [formData, setFormData] = useState<FormItem>({
-    userName: "",
+    username: "",
     password: "",
   });
 
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    navigate("/home");
-
-    if (formData.userName.length < 12) {
-      return toast.error(t("signUpError.phoneNumberLengthError"), {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "foo-bar",
-      });
-    } else if (formData.userName === "") {
+    if (formData.username === "") {
       return toast.error(t("signUpError.phoneNumberError"), {
         position: toast.POSITION.TOP_RIGHT,
         className: "foo-bar",
@@ -63,46 +56,18 @@ const Login = () => {
     }
 
     try {
-      const response: AxiosResponse = await getGoodsApi.post(
-        "/checkLoginPassword.php",
-        formData
-      );
+      const response: AxiosResponse = await api.post("/auth/login", formData);
 
-      console.log("checklogin Response", response);
-
-      // console.log("response", response);
-      // console.log("formData", formData);
-
-      const userId: string = response.data[0].userId;
-
-      const goods: AxiosResponse = await getGoodsApi.post("/goods.php", {
-        userId: userId,
-      });
-
-      dispatch(userData(response.data));
-      dispatch(goodsData(goods.data));
-
-      console.log("goods", goods);
-
-      if (response.data.length) {
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
         navigate("/home/goods");
-      } else {
-        return toast.error(t("errorLogin"), {
-          position: toast.POSITION.TOP_RIGHT,
-          className: "foo-bar",
-        });
       }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log("error message: ", error.message);
-        return error.message;
-      } else {
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
         toast.error(t("errorLogin"), {
           position: toast.POSITION.TOP_RIGHT,
           className: "foo-bar",
         });
-        console.log("unexpected error: ", error);
-        return "An unexpected error occurred";
       }
     }
   };
@@ -125,7 +90,7 @@ const Login = () => {
             </p>
             <select
               defaultValue={language}
-              className="text-sm font-semibold outline-none text-three cursor-pointer "
+              className="text-sm font-semibold h-[24px] rounded-md outline-none text-three cursor-pointer "
               onChange={handleChangeLanguage}
             >
               <option value="uz">uz</option>
@@ -140,46 +105,56 @@ const Login = () => {
             className="flex flex-col items-center gap-4 "
             onSubmit={handleForm}
           >
-            <div className="w-full flex ml-10 ">
-              <div className="absolute mt-2 ml-2">
-                <PhoneSvg />
-              </div>
+            <label className="input  w-5/6 input-bordered flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="w-4 h-4 opacity-70"
+              >
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+              </svg>
               <input
-                type="tel"
-                name="userName"
-                className="w-[90%] border-b-2 outline-none pl-10 pb-2 text-base font-normal h-10"
-                placeholder={t("loginIn.inputNumber") as string}
-                value={formData.userName}
+                type="text"
+                name="username"
+                className="grow min-h-[40px]"
+                placeholder={t("signUp.inputUserName") as string}
+                value={formData.username}
                 onChange={(e) =>
-                  setFormData({ ...formData, userName: e.target.value })
+                  setFormData({ ...formData, username: e.target.value })
                 }
               />
-            </div>
-            <div className="w-full flex ml-10 ">
-              <div className="absolute mt-2 ml-2">
-                <LockSvg />
-              </div>
+            </label>
+            <label className="input input-bordered w-5/6 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="w-4 h-4 opacity-70"
+              >
+                <path d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" />
+              </svg>
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 autoComplete="on"
-                className="w-[90%] border-b-2 outline-none pl-10 pb-2 text-base font-normal h-10"
-                placeholder={t("loginIn.inputPassword") as string}
+                className="grow min-h-[40px]"
+                placeholder={t("signUp.inputPassword") as string}
                 value={formData.password}
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
               />
               <div
-                className="cursor-pointer absolute ml-96 mt-2 hover:translate-y-[1px] transition"
+                className="cursor-pointer bg-white rounded-full hover:translate-y-[1px] transition"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <EyeSvg />
               </div>
-            </div>
+            </label>
             <button
               type="submit"
-              className="w-[90%] h-10 text-md text-white rounded-sm bg-secondary mt-8"
+              className="w-5/6 min-h-[40px] text-md text-white rounded-md bg-secondary "
             >
               {t("loginIn.login")}
             </button>

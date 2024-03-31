@@ -1,24 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState } from "./userSliceType";
+import { UserStoreState, WorkersUser } from "../types/userTypes";
 
-const initialState: UserState = {
-  userData: [],
-  userLocation: [] || null,
-  statusProps: "",
+const initialState: UserStoreState = {
+  userPremises: [],
+  userWorkers: [],
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userData: (state, action: PayloadAction<any>) => {
-      state.userData.push(action.payload[0] !== null && action.payload[0]);
-      state.userLocation.push(
-        action.payload[1] !== null && action.payload[1][0]
-      );
+    userDataPremises: (state, action: PayloadAction<any>) => {
+      state.userPremises = action.payload !== null && action.payload;
     },
-    userStatus: (state, action: PayloadAction<string>) => {
-      state.statusProps = action.payload;
+    userDataWorkers: (state, action: PayloadAction<any>) => {
+      state.userWorkers = action.payload !== null && action.payload;
     },
     // clearAllUser(state, action): never[] | undefined {
     //   return [];
@@ -31,6 +27,6 @@ const userSlice = createSlice({
   // },
 });
 
-export const { userData, userStatus } = userSlice.actions;
+export const { userDataPremises, userDataWorkers } = userSlice.actions;
 
 export default userSlice.reducer;

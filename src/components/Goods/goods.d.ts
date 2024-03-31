@@ -38,3 +38,15 @@ export type GoodsProps = {
   barCodeFilter: string[] | null;
   wherecomeFilter: string[] | null;
 };
+
+export interface AllGoods {
+  id: number;
+  name: string;
+  barcode: string;
+  createdAt: string;
+  count: number;
+  price: number;
+  url?: string;
+  category: string;
+  addedBy: string;
+}

@@ -12,6 +12,7 @@ import {
 } from "../../assets/icons1/IconsSVG";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../hook";
+import UserInfo from "../Users/UserInfo";
 
 const Sidebar = () => {
   const { t } = useTranslation();
@@ -21,28 +22,27 @@ const Sidebar = () => {
   const { pathname } = useLocation();
 
   const user = useAppSelector((state) => state.user);
-  const userData = user.userData[0]?.fullName;
-  const status = user.userData[0]?.status;
-  const userLocation = user.userLocation[0]?.premiseName;
+  // const status = user.userData[0]?.status;
+  // const userLocation = user.userLocation[0]?.premiseName;
 
   const slicePathname = pathname.slice(1);
 
-  useEffect(() => {
-    switch (status) {
-      case "1":
-        setStatusText(`${t("statusUser.1")}`);
-        break;
-      case "2":
-        setStatusText(`${t("statusUser.2")}`);
-        break;
-      case "3":
-        setStatusText(`${t("statusUser.3")}`);
-        break;
-      case "4":
-        setStatusText(`${t("statusUser.4")}`);
-        break;
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   switch (status) {
+  //     case "1":
+  //       setStatusText(`${t("statusUser.1")}`);
+  //       break;
+  //     case "2":
+  //       setStatusText(`${t("statusUser.2")}`);
+  //       break;
+  //     case "3":
+  //       setStatusText(`${t("statusUser.3")}`);
+  //       break;
+  //     case "4":
+  //       setStatusText(`${t("statusUser.4")}`);
+  //       break;
+  //   }
+  // }, [status]);
 
   useEffect(() => {
     switch (slicePathname) {
@@ -89,12 +89,7 @@ const Sidebar = () => {
     <>
       {sidebarScroll ? (
         <div className="w-[70px] bg-white h-full flex flex-col justify-center items-center relative transition-all ease-out">
-          <div className="flex flex-col items-center mt-4">
-            <div className="w-10 h-10 bg-blue-300 rounded-full "></div>
-            <label className="text-two font-bold">{statusText}</label>
-            <label className="text-two font-medium">{userData}</label>
-            <label className="text-three font-normal">{userLocation}</label>
-          </div>
+          <UserInfo />
           <div className="flex-[2.8] flex-col w-full mt-4  mr-4">
             <NavLink
               to="/home/dashboard"
@@ -178,18 +173,15 @@ const Sidebar = () => {
             </NavLink>
           </div>
           <div
-            className="mr-[-8px] w-5 h-5 bg-primary rounded-full cursor-pointer absolute top-[50%] right-0"
+            className="mr-[-8px] w-5 h-5 bg-base-200 rounded-full cursor-pointer absolute top-[50%] right-0"
             onClick={() => setSidebarScroll(!sidebarScroll)}
           ></div>
         </div>
       ) : (
         <div className="flex-initial w-[239px] bg-white h-full  flex-col flex items-center relative transition-all ease-out">
-          <div className="flex flex-col items-center mt-4">
-            <div className="w-24 h-24 bg-blue-300 rounded-full "></div>
-            <label className="text-two font-bold">{statusText}</label>
-            <label className="text-two font-medium">{userData}</label>
-            <label className="text-three font-normal">{userLocation}</label>
-          </div>
+          <section className="flex flex-col items-center mt-4">
+            <UserInfo />
+          </section>
           <div className="flex-[2.8] flex flex-col w-full mt-4">
             <NavLink
               to="/home/dashboard"
@@ -281,7 +273,7 @@ const Sidebar = () => {
             </NavLink>
           </div>
           <div
-            className="mr-[-8px] w-5 h-5 bg-primary rounded-full cursor-pointer absolute top-[50%] right-0"
+            className="mr-[-8px] w-5 h-5 bg-base-200 rounded-full cursor-pointer absolute top-[50%] right-0"
             onClick={() => setSidebarScroll(!sidebarScroll)}
           ></div>
         </div>

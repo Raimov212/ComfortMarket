@@ -20,7 +20,7 @@ export default {
         "5xl": "3.052rem",
       },
       colors: {
-        primary: "#6945FF",
+        primary: "rgb(226 232 240)",
         secondary: "#FF6B55",
         buttonColor: "#4CAF50",
       },
@@ -39,5 +39,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

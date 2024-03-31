@@ -3,11 +3,13 @@ import { configureStore } from "@reduxjs/toolkit";
 // import userSlice from "./userSlice";
 import goodsReducer from "./todoSlice";
 import userSlice from "./userSlice";
+import rootReducer from "./combineReducer";
 
 const store = configureStore({
   reducer: {
-    goods: goodsReducer,
-    user: userSlice,
+    rootReducer,
+    // goods: goodsReducer,
+    // user: userSlice,
   },
 });
 

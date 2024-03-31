@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Loading } from "./components/Suspense";
 import Error from "./components/Error/index.tsx";
 import CreateShop from "./components/Authorization/CreateShop.tsx";
+import { useAppSelector } from "./hook/index.ts";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
@@ -29,14 +30,7 @@ function App() {
             </Suspense>
           }
         />
-        <Route
-          path="/home"
-          element={
-            <Suspense fallback={<Loading />}>
-              <Home />
-            </Suspense>
-          }
-        >
+        <Route path="/home" element={<Home />}>
           <Route
             path="dashboard"
             element={
@@ -65,12 +59,11 @@ function App() {
             index
             path="goods"
             element={
-              <Suspense fallback={<Loading />}>
-                <Goods />
-              </Suspense>
+              // <Suspense fallback={<Loading />}>
+              <Goods />
+              // </Suspense>
             }
           />
-          z
           <Route
             path="categories"
             element={

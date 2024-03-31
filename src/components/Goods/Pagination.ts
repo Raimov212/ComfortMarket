@@ -3,12 +3,12 @@ import { PaginationType } from "./goods";
 
 function usePagination({ data, itemsPerPage }: PaginationType) {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const maxPage = Math.ceil(data.length / itemsPerPage);
+  const maxPage = Math.ceil(data?.length / itemsPerPage);
 
   function currentData() {
     const begin = (currentPage - 1) * itemsPerPage;
     const end = begin + itemsPerPage;
-    return data.slice(begin, end);
+    return data?.slice(begin, end);
   }
 
   function next(_: React.MouseEvent) {

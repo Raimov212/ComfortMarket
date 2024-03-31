@@ -1,8 +1,12 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [lng, setLng] = useState<string>("uz");
 
   //language
   const {
@@ -10,63 +14,92 @@ const Navbar = () => {
     i18n: { changeLanguage, language },
   } = useTranslation();
 
-  const handleChangeLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const language = e.target.value;
-    const storageLanguage = JSON.stringify(language);
-    changeLanguage(language);
+  useEffect(() => {
+    const storageLanguage = JSON.stringify(lng);
+    changeLanguage(lng);
     localStorage.setItem("language", storageLanguage);
-  };
+  }, [lng, setLng]);
+
+  // const handleChangeLanguage = (e: React.ChangeEvent<HTMLUListElement>) => {
+  //   const storageLanguage = JSON.stringify(language);
+  //   changeLanguage(language);
+  //   localStorage.setItem("language", storageLanguage);
+  // };
 
   const handleCLosePage = () => {
+    sessionStorage.setItem("userId", JSON.stringify(""));
+
+    navigate("/");
+  };
+
+  const signOut = () => {
+    dispatch({ type: "RESET" });
+    localStorage.setItem("token", "");
     navigate("/");
   };
 
   localStorage.setItem("category", JSON.stringify(t("category.dashboard")));
 
   return (
-    <div className="flex w-full h-[40px] bg-primary items-center">
-      <div className="flex-[2] justify-between items-center flex pl-4">
-        <div className="flex font-medium">
-          <p className="text-2xl text-white">{t("logoTitle1")}</p>
-          <p className="text-2xl text-secondary">{t("logoTitle2")}</p>
+    <>
+      <div className="navbar bg-base-100">
+        <div className="flex-1">
+          <a className="btn btn-ghost text-xl">
+            <p className="text-2xl text-white">{t("logoTitle1")}</p>
+            <p className="text-2xl text-secondary">{t("logoTitle2")}</p>
+          </a>
         </div>
-        <p className="text-white">
-          {JSON.parse(localStorage.getItem("category") || "")}
-        </p>
+        <ul className="menu menu-horizontal px-1 flex gap-4">
+          <li>
+            <details>
+              <summary>Til</summary>
+              <ul className="p-2 bg-base-100 rounded-md z-40">
+                <li onClick={() => setLng("uz")}>
+                  {" "}
+                  <a>uzbek</a>
+                </li>
+                <li onClick={() => setLng("ru")}>
+                  <a>russia</a>
+                </li>
+                <li onClick={() => setLng("en")}>
+                  <a>english</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li className="mr-4">
+            <details>
+              <summary>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="Outline"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                >
+                  <path
+                    fill="#A7A8AA"
+                    d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"
+                  />
+                  <path
+                    fill="#A7A8AA"
+                    d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"
+                  />
+                </svg>
+              </summary>
+              <ul className="p-2 bg-base-100 rounded-md z-40 w-28">
+                <li>
+                  <a>settings</a>
+                </li>
+                <li>
+                  <a onClick={signOut}>Sign out</a>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
       </div>
-      <div className="flex-[3] flex justify-end mr-4 gap-2 items-center">
-        <div
-          className="w-6 h-6 rounded-full border-2 cursor-pointer"
-          onClick={handleCLosePage}
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M16.4392 17.0399C16.0593 15.9767 15.2224 15.0373 14.0581 14.3672C12.8938 13.6972 11.4672 13.334 9.99968 13.334C8.53211 13.334 7.10556 13.6972 5.94127 14.3672C4.77697 15.0373 3.94 15.9767 3.56017 17.0399"
-              stroke="white"
-            />
-            <circle cx="10.0003" cy="6.66732" r="3.33333" stroke="white" />
-          </svg>
-        </div>
-        {/* <button className="p-2 bg-blue-400" onClick={() => navigate("/")}>
-          LoginPage
-        </button> */}
-        {/* <button
-          className="p-2 bg-blue-400"
-          onClick={() => navigate("/auth/register")}
-        >
-          Register
-        </button> */}
-        <select
-          defaultValue={language}
-          className="text-sm font-semibold outline-none  w-9 h-8 text-tertiary cursor-pointer bg-primary text-white"
-          onChange={handleChangeLanguage}
-        >
-          <option value="uz">uz</option>
-          <option value="ru">ru</option>
-          <option value="en">en</option>
-        </select>
-      </div>
-    </div>
+    </>
   );
 };
 

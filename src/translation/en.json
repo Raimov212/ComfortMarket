@@ -20,18 +20,19 @@
       "member": "Already a member?",
       "signUp": "Sign Up",
       "inputFullName": "Full name",
+      "inputUserName": "User name",
       "inputNumber": "Phone number",
       "inputPassword": "Password",
       "inputConfirmPassword": "Comfirm password",
       "sign": "Sign Up",
       "errorLogin": {
         "title": "Ощибка в системе",
-        "span": "Обрашайтись к Администратору!"
+        "span": "Contact an administrator!"
       },
       "success": {
         "title": "Выполнено успешно!"
       },
-      "alreadyUser": "Such a phone number is registered"
+      "alreadyUser": "This user has already registered"
     },
     "signUpError": {
       "fullNameError": "Fullname must not be empty",
