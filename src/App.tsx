@@ -17,6 +17,7 @@ const Categories = lazy(() => import("./pages/Categories.tsx"));
 const Management = lazy(() => import("./pages/Management.tsx"));
 const Reviews = lazy(() => import("./pages/Reviews.tsx"));
 const Employee = lazy(() => import("./pages/Employee.tsx"));
+const Invoice = lazy(() => import("./pages/Invoice.tsx"));
 
 function App() {
   return (
@@ -59,9 +60,18 @@ function App() {
             index
             path="goods"
             element={
-              // <Suspense fallback={<Loading />}>
-              <Goods />
-              // </Suspense>
+              <Suspense fallback={<Loading />}>
+                <Goods />
+              </Suspense>
+            }
+          />
+          <Route
+            index
+            path="invoice"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Invoice />
+              </Suspense>
             }
           />
           <Route

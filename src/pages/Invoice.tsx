@@ -1,15 +1,15 @@
-import { Key, useCallback, useEffect, useMemo, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import CreatePremise from "../components/Premise/createPremise";
 import { CreatePremiseType, DataType } from "../types/premiseTypes";
 import api from "../api";
 
 import { Table } from "antd";
 import type { GetProp, TableProps } from "antd";
-import { columnsPremiseExtraProduct } from "../data/premiseTable";
 import { PremiseProducts } from "../types/premiseProductsTypes";
 import CreatePremiseProduct from "../components/Premise/createPremiseProduct";
 import TransferProduct from "../components/Premise/transferProduct";
 import { ProductsDataType } from "../types/productTypes";
+import { InvoiceDataType } from "../types/invoice";
 
 type TablePaginationConfig = Exclude<
   GetProp<TableProps, "pagination">,
@@ -43,8 +43,8 @@ const PremiseType: PremiseTypes = {
   },
 };
 
-const Goods = () => {
-  const [data, setData] = useState<ProductsDataType[]>([]);
+const Invoice = () => {
+  const [data, setData] = useState<InvoiceDataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectProductId, setSelectProductId] = useState<number | null>();
   const [successPremise, setSuccessPremise] = useState<boolean>(false);
@@ -75,17 +75,16 @@ const Goods = () => {
     categoryId: 0,
   });
 
-  const handleAddPremiseProduct = useCallback((key: React.Key) => {
+  const handleAddPremiseProduct = (key: React.Key) => {
     const modal = document.getElementById("my_modal_5");
     if ((modal as any).showModal) (modal as any).showModal();
     setSelectProductId(Number(key));
-  }, []);
-
-  const handleUpdatePremiseProduct = useCallback((key: DataType) => {
+  };
+  const handleUpdatePremiseProduct = (key: DataType) => {
     const modal = document.getElementById("my_modal_4");
     if ((modal as any).showModal) (modal as any).showModal();
     setSelectPremise(key);
-  }, []);
+  };
 
   const columnsPremise: ColumnsType<DataType> = [
     {
@@ -149,24 +148,11 @@ const Goods = () => {
     },
   ];
 
-  const storagePremiseID = useMemo(
-    () => JSON.parse(localStorage.getItem("premiseId") || ""),
-    [localStorage.getItem("premiseId")]
-  );
-
-  console.log("storagePremiseID", storagePremiseID);
-
-  useEffect(() => {
-    const getPremiseData = async () => {
-      setLoading(false);
-      await api
-        .get(`/products/by-premise/${storagePremiseID}`, {
-          // params: {
-          //   page: tableParams?.pagination?.current,
-          //   size: tableParams?.pagination?.pageSize,
-          // },
-        })
-        .then(({ data }) => {
+  useEffect(
+    () => {
+      const getPremiseData = async () => {
+        setLoading(false);
+        await api.get("/invoice").then(({ data }) => {
           setData(data);
           setLoading(false);
           // setTableParams({
@@ -177,19 +163,20 @@ const Goods = () => {
           //   },
           // });
         });
-    };
+      };
 
-    getPremiseData();
+      getPremiseData();
 
-    // setTimeout(() => {
-    //   setSuccessPremise(false);
-    // }, 1000);
-  }, [
-    storagePremiseID,
-    // tableParams.pagination?.current,
-    // tableParams.pagination?.pageSize,
-    // successPremise,
-  ]);
+      setTimeout(() => {
+        setSuccessPremise(false);
+      }, 1000);
+    },
+    [
+      // tableParams.pagination?.current,
+      // tableParams.pagination?.pageSize,
+      // successPremise,
+    ]
+  );
 
   const handleTableChange: TableProps["onChange"] = (
     pagination,
@@ -225,7 +212,7 @@ const Goods = () => {
 
   return (
     <div className="p-4">
-      {/* <button
+      <button
         className="btn mb-2 ml-[86%]"
         onClick={() => {
           const modal = document.getElementById("my_modal_4");
@@ -233,7 +220,7 @@ const Goods = () => {
         }}
       >
         create new premise
-      </button> */}
+      </button>
       <dialog id="my_modal_4" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <CreatePremise
@@ -301,4 +288,4 @@ const Goods = () => {
   );
 };
 
-export default Goods;
+export default Invoice;

@@ -44,7 +44,7 @@ const PremiseType: PremiseTypes = {
 };
 
 const Management = () => {
-  const [data, setData] = useState<DataType[]>();
+  const [data, setData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectProductId, setSelectProductId] = useState<number | null>();
   const [successPremise, setSuccessPremise] = useState<boolean>(false);
@@ -105,7 +105,6 @@ const Management = () => {
     {
       title: "Address",
       dataIndex: "address",
-
       width: "40%",
     },
     {
@@ -120,9 +119,9 @@ const Management = () => {
         { text: "SHOP", value: "SHOP" },
         { text: "WAREHOUSE", value: "WAREHOUSE" },
       ],
-      onFilter: (value: boolean | Key, record: DataType) =>
-        record.type.indexOf(value as string) === 0,
-      width: "20%",
+      // onFilter: (value: boolean | Key, record: DataType) =>
+      //   record.type.indexOf(value as string) === 0,
+      // width: "20%",
     },
     {
       title: "operation",
@@ -146,72 +145,58 @@ const Management = () => {
     },
   ];
 
-  const columnsPremiseProduct: ColumnsType<ProductsDataType> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      sorter: true,
-      render: (name) => `${name}`,
-      width: "20%",
-    },
-    {
-      title: "Narxi",
-      dataIndex: "price",
-      width: "20%",
-      // onFilter: (value: string, record) => record.name.indexOf(value) === 0,
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ["descend"],
-    },
-    {
-      title: "Sana",
-      dataIndex: "createdAt",
-      width: "20%",
-    },
-    {
-      title: "Categoriya",
-      dataIndex: "category",
-      width: "20%",
-    },
-    {
-      title: "Barcode",
-      dataIndex: "barcode",
-      width: "20%",
-    },
-    {
-      title: "User",
-      dataIndex: "addedBy",
-      width: "20%",
-    },
-    {
-      title: "operation",
-      dataIndex: "operation",
-      render: (_, record: ProductsDataType) => (
-        <button onClick={() => handleTransferProduct(record)}>Transfer</button>
-      ),
-    },
-  ];
+  // const columnsPremiseProduct: ColumnsType<ProductsDataType> = [
+  //   {
+  //     title: "Name",
+  //     dataIndex: "name",
+  //     sorter: true,
+  //     render: (name) => `${name}`,
+  //     width: "20%",
+  //   },
+  //   {
+  //     title: "Narxi",
+  //     dataIndex: "price",
+  //     width: "20%",
+  //     // onFilter: (value: string, record) => record.name.indexOf(value) === 0,
+  //     sorter: (a, b) => a.name.length - b.name.length,
+  //     sortDirections: ["descend"],
+  //   },
+  //   {
+  //     title: "Sana",
+  //     dataIndex: "createdAt",
+  //     width: "20%",
+  //   },
+  //   {
+  //     title: "Categoriya",
+  //     dataIndex: "category",
+  //     width: "20%",
+  //   },
+  //   {
+  //     title: "Barcode",
+  //     dataIndex: "barcode",
+  //     width: "20%",
+  //   },
+  //   {
+  //     title: "User",
+  //     dataIndex: "addedBy",
+  //     width: "20%",
+  //   },
+  //   {
+  //     title: "operation",
+  //     dataIndex: "operation",
+  //     render: (_, record: ProductsDataType) => (
+  //       <button onClick={() => handleTransferProduct(record)}>Transfer</button>
+  //     ),
+  //   },
+  // ];
 
   useEffect(() => {
     const getPremiseData = async () => {
       setLoading(false);
-      await api
-        .get("/premise", {
-          // params: {
-          //   page: tableParams?.pagination?.current,
-          //   size: tableParams?.pagination?.pageSize,
-          // },
-        })
-        .then(({ data }) => {
-          setData(data);
-          setLoading(false);
-          setTableParams({
-            ...tableParams,
-            pagination: {
-              ...tableParams.pagination,
-              total: data?.length,
-            },
-          });
-        });
+      await api.get("/premise").then(({ data }) => {
+        setData(data);
+        setLoading(false);
+      });
     };
 
     getPremiseData();
@@ -219,11 +204,7 @@ const Management = () => {
     setTimeout(() => {
       setSuccessPremise(false);
     }, 1000);
-  }, [
-    tableParams.pagination?.current,
-    tableParams.pagination?.pageSize,
-    successPremise,
-  ]);
+  }, [0]);
 
   const handleTableChange: TableProps["onChange"] = (
     pagination,
@@ -319,40 +300,35 @@ const Management = () => {
       <Table
         columns={columnsPremise}
         rowKey={(record) => record.id}
-        dataSource={data}
+        dataSource={data.filter((item) => item.type === "SHOP")}
         // rowSelection={{ ...rowSelection }}
         pagination={false}
-        // pagination={{
-        //   pageSizeOptions: ["10", "20"],
-        //   showSizeChanger: true,
-        //   pageSize: data?.length,
-        // }}
         loading={loading}
         onChange={handleTableChange}
-        expandable={{
-          expandedRowRender: (record) => {
-            setSelectPremiseId(record.id);
-            return (
-              <Table
-                columns={columnsPremiseProduct}
-                dataSource={record.products}
-                rowKey={(record) => record.id}
-                // onChange={handleTableChild}
-                expandable={{
-                  expandedRowRender: (second) => {
-                    return (
-                      <Table
-                        columns={columnsPremiseExtraProduct}
-                        dataSource={second.extra}
-                        rowKey={(record) => record.premise}
-                      />
-                    );
-                  },
-                }}
-              />
-            );
-          },
-        }}
+        // expandable={{
+        //   expandedRowRender: (record) => {
+        //     setSelectPremiseId(record.id);
+        //     return (
+        //       <Table
+        //         columns={columnsPremiseProduct}
+        //         dataSource={record.products}
+        //         rowKey={(record) => record.id}
+        //         // onChange={handleTableChild}
+        //         expandable={{
+        //           expandedRowRender: (second) => {
+        //             return (
+        //               <Table
+        //                 columns={columnsPremiseExtraProduct}
+        //                 dataSource={second.extra}
+        //                 rowKey={(record) => record.premise}
+        //               />
+        //             );
+        //           },
+        //         }}
+        //       />
+        //     );
+        //   },
+        // }}
       />
     </div>
   );

@@ -20,7 +20,7 @@ interface ModalProps {
 }
 
 const CreateShop = () => {
-  const idUser = useAppSelector((state) => state.user.statusProps);
+  const idUser = useAppSelector((state) => state.rootReducer);
   // console.log("idUser", idUser);
 
   //Errors

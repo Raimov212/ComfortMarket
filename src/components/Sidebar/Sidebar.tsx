@@ -6,43 +6,23 @@ import {
   DashboardIcons,
   EmployeeIcons,
   GoodsIcons,
+  InvoiceIcons,
   ManagementIcons,
   ReviewsIcons,
   SellsIcons,
 } from "../../assets/icons1/IconsSVG";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../../hook";
 import UserInfo from "../Users/UserInfo";
+
+import IconInvoice from "../../assets/icons1/invoice.svg";
 
 const Sidebar = () => {
   const { t } = useTranslation();
-  const [statusText, setStatusText] = useState<string>("");
   const [sidebarScroll, setSidebarScroll] = useState<boolean>(false);
 
   const { pathname } = useLocation();
 
-  const user = useAppSelector((state) => state.user);
-  // const status = user.userData[0]?.status;
-  // const userLocation = user.userLocation[0]?.premiseName;
-
   const slicePathname = pathname.slice(1);
-
-  // useEffect(() => {
-  //   switch (status) {
-  //     case "1":
-  //       setStatusText(`${t("statusUser.1")}`);
-  //       break;
-  //     case "2":
-  //       setStatusText(`${t("statusUser.2")}`);
-  //       break;
-  //     case "3":
-  //       setStatusText(`${t("statusUser.3")}`);
-  //       break;
-  //     case "4":
-  //       setStatusText(`${t("statusUser.4")}`);
-  //       break;
-  //   }
-  // }, [status]);
 
   useEffect(() => {
     switch (slicePathname) {
@@ -130,6 +110,16 @@ const Sidebar = () => {
               }
             >
               <GoodsIcons />
+            </NavLink>
+            <NavLink
+              to="/home/invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-12 pl-[14px] rounded-full ml-5 h-12 items-center transition ease-in"
+                  : "text-two flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <img src={IconInvoice} alt="icon invoice" />
             </NavLink>
             <NavLink
               to="/home/categories"
@@ -226,6 +216,17 @@ const Sidebar = () => {
             >
               <GoodsIcons />
               {t("category.goods")}
+            </NavLink>
+            <NavLink
+              to="/home/invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-full pl-8 h-12 items-center transition ease-in"
+                  : "text-two flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <img src={IconInvoice} alt="icon invoice" />
+              <p>Invoice</p>
             </NavLink>
             <NavLink
               to="/home/categories"

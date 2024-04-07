@@ -9,7 +9,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
-import { userStatus } from "../../redux/userSlice";
 import api from "../../api";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -61,7 +60,7 @@ const Register = () => {
     username: "",
     phoneNumber: "",
     password: "",
-    role: "ADMIN",
+    role: "OWNER",
   });
 
   // const [action] = useState<string>("signup")
@@ -373,7 +372,6 @@ const Register = () => {
               }
               className="select select-bordered w-5/6 "
             >
-              <option value="ADMIN">ADMIN</option>
               <option value="OWNER">OWNER</option>
               <option value="WORKER">WORKER</option>
             </select>

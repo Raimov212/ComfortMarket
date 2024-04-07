@@ -2,16 +2,22 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import api from "../../api";
+import { DataType } from "../../types/premiseTypes";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [dataPremise, setDataPremise] = useState<DataType[]>([]);
+  const [selectPremiseId, setSelectPremiseId] = useState<string>(
+    JSON.parse(localStorage.getItem("premiseId") || "")
+  );
   const [lng, setLng] = useState<string>("uz");
 
   //language
   const {
     t,
-    i18n: { changeLanguage, language },
+    i18n: { changeLanguage },
   } = useTranslation();
 
   useEffect(() => {
@@ -20,17 +26,10 @@ const Navbar = () => {
     localStorage.setItem("language", storageLanguage);
   }, [lng, setLng]);
 
-  // const handleChangeLanguage = (e: React.ChangeEvent<HTMLUListElement>) => {
-  //   const storageLanguage = JSON.stringify(language);
-  //   changeLanguage(language);
-  //   localStorage.setItem("language", storageLanguage);
-  // };
-
-  const handleCLosePage = () => {
-    sessionStorage.setItem("userId", JSON.stringify(""));
-
-    navigate("/");
-  };
+  useEffect(() => {
+    const storageSelectPremiseId = JSON.stringify(selectPremiseId);
+    localStorage.setItem("premiseId", storageSelectPremiseId);
+  }, [selectPremiseId]);
 
   const signOut = () => {
     dispatch({ type: "RESET" });
@@ -39,6 +38,16 @@ const Navbar = () => {
   };
 
   localStorage.setItem("category", JSON.stringify(t("category.dashboard")));
+
+  useEffect(() => {
+    const getPremiseData = async () => {
+      await api.get("/premise").then(({ data }) => {
+        setDataPremise(data);
+      });
+    };
+
+    getPremiseData();
+  }, [0]);
 
   return (
     <>
@@ -49,7 +58,23 @@ const Navbar = () => {
             <p className="text-2xl text-secondary">{t("logoTitle2")}</p>
           </a>
         </div>
-        <ul className="menu menu-horizontal px-1 flex gap-4">
+        <ul className="menu menu-horizontal px-1 flex gap-4 ">
+          <li>
+            <select
+              onChange={(e) => setSelectPremiseId(e.target.value)}
+              className="select select-bordered w-full "
+            >
+              {dataPremise?.map((premise) => {
+                if (premise.type === "SHOP") {
+                  return (
+                    <option value={premise.id} key={premise.id}>
+                      {premise.name}
+                    </option>
+                  );
+                }
+              })}
+            </select>
+          </li>
           <li>
             <details>
               <summary>Til</summary>

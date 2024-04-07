@@ -30,7 +30,7 @@ const CreatePremiseProduct = memo(
       const getCategory = async () => {
         api.get("/category").then(({ data }) => {
           setCategoryData(data);
-          setPremiseProducts((prev) => ({ ...prev, categoryId: data[0].id }));
+          setPremiseProducts((prev) => ({ ...prev, categoryId: data[0]?.id }));
         });
       };
 
