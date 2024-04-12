@@ -26,15 +26,13 @@ const UserInfo = () => {
   }, []);
 
   return (
-    <>
-      <div className="stats shadow  w-48">
-        <div className="stat">
-          <div className="stat-title">{userData?.role}</div>
-          <div className="stat-value">{userData?.fullName}</div>
-          <div className="stat-desc ">{userData?.phoneNumber}</div>
-        </div>
+    <div className="stats shadow w-full">
+      <div className="stat">
+        <div className="stat-title">{userData?.role}</div>
+        <div className="stat-value">{userData?.fullName}</div>
+        <div className="stat-desc ">{userData?.phoneNumber}</div>
       </div>
-    </>
+    </div>
   );
 };
 

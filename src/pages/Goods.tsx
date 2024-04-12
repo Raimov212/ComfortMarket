@@ -1,15 +1,18 @@
-import { Key, useCallback, useEffect, useMemo, useState } from "react";
+import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CreatePremise from "../components/Premise/createPremise";
 import { CreatePremiseType, DataType } from "../types/premiseTypes";
 import api from "../api";
 
-import { Table } from "antd";
-import type { GetProp, TableProps } from "antd";
+import { Button, Input, Space, Table } from "antd";
+import type { GetProp, InputRef, TableColumnType, TableProps } from "antd";
 import { columnsPremiseExtraProduct } from "../data/premiseTable";
 import { PremiseProducts } from "../types/premiseProductsTypes";
 import CreatePremiseProduct from "../components/Premise/createPremiseProduct";
 import TransferProduct from "../components/Premise/transferProduct";
 import { ProductsDataType } from "../types/productTypes";
+import Highlighter from "react-highlight-words";
+import { SearchOutlined } from "@ant-design/icons";
+import { FilterDropdownProps } from "antd/es/table/interface";
 
 type TablePaginationConfig = Exclude<
   GetProp<TableProps, "pagination">,
@@ -46,9 +49,16 @@ const PremiseType: PremiseTypes = {
 const Goods = () => {
   const [data, setData] = useState<ProductsDataType[]>([]);
   const [loading, setLoading] = useState(true);
+  //FILTER TABLE
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef<InputRef>(null);
+
   const [selectProductId, setSelectProductId] = useState<number | null>();
   const [successPremise, setSuccessPremise] = useState<boolean>(false);
-  const [selectPremise, setSelectPremise] = useState<DataType | undefined>();
+  const [selectPremise, setSelectPremise] = useState<
+    ProductsDataType | undefined
+  >();
   const [selectPremiseId, setSelectPremiseId] = useState<number | undefined>();
   const [selectTransfer, setSelectTransfer] =
     useState<ProductsDataType | null>();
@@ -81,13 +91,121 @@ const Goods = () => {
     setSelectProductId(Number(key));
   }, []);
 
-  const handleUpdatePremiseProduct = useCallback((key: DataType) => {
+  const handleUpdatePremiseProduct = useCallback((key: ProductsDataType) => {
     const modal = document.getElementById("my_modal_4");
     if ((modal as any).showModal) (modal as any).showModal();
     setSelectPremise(key);
   }, []);
 
-  const columnsPremise: ColumnsType<DataType> = [
+  type DataIndex = keyof ProductsDataType;
+
+  const handleSearch = (
+    selectedKeys: string[],
+    confirm: FilterDropdownProps["confirm"],
+    dataIndex: DataIndex
+  ) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): TableColumnType<ProductsDataType> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys as string[], confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() =>
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+            }
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90, backgroundColor: "#1890ff", color: "white" }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setSearchText((selectedKeys as string[])[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const columnsPremise: ColumnsType<ProductsDataType> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -95,6 +213,7 @@ const Goods = () => {
       width: "32%",
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ["ascend"],
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Barcode",
@@ -110,6 +229,7 @@ const Goods = () => {
       title: "Sana",
       dataIndex: "createdAt",
       width: "20%",
+      ...getColumnSearchProps("createdAt"),
     },
     {
       title: "Xodim",
@@ -119,18 +239,18 @@ const Goods = () => {
     {
       title: "Category",
       dataIndex: "category",
-      filters: [
-        { text: "SHOP", value: "SHOP" },
-        { text: "WAREHOUSE", value: "WAREHOUSE" },
-      ],
-      onFilter: (value: boolean | Key, record: DataType) =>
-        record.type.indexOf(value as string) === 0,
+      // filters: [
+      //   { text: "SHOP", value: "SHOP" },
+      //   { text: "WAREHOUSE", value: "WAREHOUSE" },
+      // ],
+      // onFilter: (value: boolean | Key, record: ProductsDataType) =>
+      //   record.type.indexOf(value as string) === 0,
       width: "20%",
     },
     {
       title: "operation",
       dataIndex: "operation",
-      render: (_, record: DataType) => (
+      render: (_, record: ProductsDataType) => (
         <div className="flex gap-2">
           <button
             className="btn btn-success"
@@ -154,7 +274,7 @@ const Goods = () => {
     [localStorage.getItem("premiseId")]
   );
 
-  console.log("storagePremiseID", storagePremiseID);
+  // console.log("storagePremiseID", storagePremiseID);
 
   useEffect(() => {
     const getPremiseData = async () => {
@@ -167,6 +287,7 @@ const Goods = () => {
           // },
         })
         .then(({ data }) => {
+          console.log("data", data);
           setData(data);
           setLoading(false);
           // setTableParams({
@@ -234,7 +355,7 @@ const Goods = () => {
       >
         create new premise
       </button> */}
-      <dialog id="my_modal_4" className="modal">
+      {/* <dialog id="my_modal_4" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <CreatePremise
             PremiseType={PremiseType}
@@ -249,7 +370,7 @@ const Goods = () => {
             </form>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
       <dialog id="my_modal_5" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <CreatePremiseProduct

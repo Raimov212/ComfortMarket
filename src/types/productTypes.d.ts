@@ -1,3 +1,8 @@
+export interface ExtraPremiseProductsType {
+  count: number | null;
+  premise: string;
+}
+
 export interface ProductsDataType {
   id: number;
   name: string;
@@ -7,4 +12,12 @@ export interface ProductsDataType {
   barcode: string;
   addedBy: string;
   extra: ExtraPremiseProductsType[];
+}
+
+export interface ProductInfoType {
+  id: number;
+  name: string;
+  barcode: string;
+  category: string;
+  producer: string;
 }

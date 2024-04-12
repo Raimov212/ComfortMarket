@@ -25,6 +25,7 @@ export interface InvoiceDataType {
 }
 
 interface InvoiceProductType {
+  name?: string;
   barcode: string;
   count: number;
   initialPrice: number;
@@ -32,9 +33,9 @@ interface InvoiceProductType {
 }
 
 export interface CreateInvoiceType {
-  premiseId: null;
+  premiseId: null | number;
   description: string;
   action: InvoiceActionType;
-  previousId: number;
+  previousId: number | null;
   products: InvoiceProductType[];
 }

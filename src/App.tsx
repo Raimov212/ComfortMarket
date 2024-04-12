@@ -4,6 +4,8 @@ import { Loading } from "./components/Suspense";
 import Error from "./components/Error/index.tsx";
 import CreateShop from "./components/Authorization/CreateShop.tsx";
 import { useAppSelector } from "./hook/index.ts";
+import EnterToInvoice from "./pages/EnterToInvoice.tsx";
+import LeftFromInvoice from "./pages/LeftFromInvoice.tsx";
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Login = lazy(() => import("./components/Authorization/Login.tsx"));
@@ -37,6 +39,22 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="enter-to-invoice"
+            element={
+              <Suspense fallback={<Loading />}>
+                <EnterToInvoice />
+              </Suspense>
+            }
+          />
+          <Route
+            path="left-from-invoice"
+            element={
+              <Suspense fallback={<Loading />}>
+                <LeftFromInvoice />
               </Suspense>
             }
           />

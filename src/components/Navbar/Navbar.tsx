@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -6,19 +6,22 @@ import api from "../../api";
 import { DataType } from "../../types/premiseTypes";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [lng, setLng] = useState<string>("uz");
   const [dataPremise, setDataPremise] = useState<DataType[]>([]);
   const [selectPremiseId, setSelectPremiseId] = useState<string>(
-    JSON.parse(localStorage.getItem("premiseId") || "")
+    localStorage.getItem("premiseId") &&
+      JSON.parse(localStorage.getItem("premiseId") || "")
   );
-  const [lng, setLng] = useState<string>("uz");
 
-  //language
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const {
     t,
     i18n: { changeLanguage },
   } = useTranslation();
+
+  localStorage.setItem("category", JSON.stringify(t("category.dashboard")));
 
   useEffect(() => {
     const storageLanguage = JSON.stringify(lng);
@@ -31,23 +34,30 @@ const Navbar = () => {
     localStorage.setItem("premiseId", storageSelectPremiseId);
   }, [selectPremiseId]);
 
+  useEffect(() => {
+    const getPremiseData = async () => {
+      await api.get("/premise").then(({ data }) => {
+        if (JSON.parse(localStorage.getItem("premiseId") || "") === "") {
+          let storageData = data.find((item: DataType) => item.type === "SHOP");
+          localStorage.setItem("premiseId", JSON.stringify(storageData.id));
+        }
+        setDataPremise(data);
+      });
+    };
+
+    getPremiseData();
+  }, []);
+
   const signOut = () => {
     dispatch({ type: "RESET" });
     localStorage.setItem("token", "");
     navigate("/");
   };
 
-  localStorage.setItem("category", JSON.stringify(t("category.dashboard")));
-
-  useEffect(() => {
-    const getPremiseData = async () => {
-      await api.get("/premise").then(({ data }) => {
-        setDataPremise(data);
-      });
-    };
-
-    getPremiseData();
-  }, [0]);
+  const handleChangePremise = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectPremiseId(e.target.value);
+    window.location.reload();
+  };
 
   return (
     <>
@@ -61,7 +71,8 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1 flex gap-4 ">
           <li>
             <select
-              onChange={(e) => setSelectPremiseId(e.target.value)}
+              onChange={handleChangePremise}
+              value={selectPremiseId}
               className="select select-bordered w-full "
             >
               {dataPremise?.map((premise) => {

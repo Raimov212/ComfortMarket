@@ -5,6 +5,8 @@ import {
   ClientsIcons,
   DashboardIcons,
   EmployeeIcons,
+  EnterToInvoiceIcons,
+  ExitFromInvoiceIcons,
   GoodsIcons,
   InvoiceIcons,
   ManagementIcons,
@@ -69,7 +71,9 @@ const Sidebar = () => {
     <>
       {sidebarScroll ? (
         <div className="w-[70px] bg-white h-full flex flex-col justify-center items-center relative transition-all ease-out">
-          <UserInfo />
+          <div className="w-4/5 pt-2">
+            <UserInfo />
+          </div>
           <div className="flex-[2.8] flex-col w-full mt-4  mr-4">
             <NavLink
               to="/home/dashboard"
@@ -80,6 +84,26 @@ const Sidebar = () => {
               }
             >
               <DashboardIcons />
+            </NavLink>
+            <NavLink
+              to="/home/enter-to-invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-12 pl-[14px] rounded-full ml-5 h-12 items-center transition ease-in"
+                  : "text-two  flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <EnterToInvoiceIcons />
+            </NavLink>
+            <NavLink
+              to="/home/left-from-invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-12 pl-[14px] rounded-full ml-5 h-12 items-center transition ease-in"
+                  : "text-two  flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <ExitFromInvoiceIcons />
             </NavLink>
             <NavLink
               to="/home/sells"
@@ -169,9 +193,9 @@ const Sidebar = () => {
         </div>
       ) : (
         <div className="flex-initial w-[239px] bg-white h-full  flex-col flex items-center relative transition-all ease-out">
-          <section className="flex flex-col items-center mt-4">
+          <div className="w-4/5 pt-2">
             <UserInfo />
-          </section>
+          </div>
           <div className="flex-[2.8] flex flex-col w-full mt-4">
             <NavLink
               to="/home/dashboard"
@@ -183,6 +207,28 @@ const Sidebar = () => {
             >
               <DashboardIcons />
               {t("category.dashboard")}
+            </NavLink>
+            <NavLink
+              to="/home/enter-to-invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-full pl-8 h-12 items-center transition ease-in"
+                  : "text-two  flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <EnterToInvoiceIcons />
+              KIRIM
+            </NavLink>
+            <NavLink
+              to="/home/left-from-invoice"
+              className={({ isActive }: { isActive: boolean }) =>
+                isActive
+                  ? "text-two bg-one flex gap-4 w-full pl-8 h-12 items-center transition ease-in"
+                  : "text-two  flex gap-4 w-full pl-8 h-12 items-center "
+              }
+            >
+              <ExitFromInvoiceIcons />
+              CHIQIM
             </NavLink>
             <NavLink
               to="/home/sells"
