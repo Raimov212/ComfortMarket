@@ -13,6 +13,7 @@ import { InvoiceDataType, InvoiceProductType } from "../types/invoice";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import { toast } from "react-toastify";
 
 type TablePaginationConfig = Exclude<
   GetProp<TableProps, "pagination">,
@@ -86,9 +87,11 @@ const Invoice = () => {
   });
 
   const handleAddPremiseProduct = (key: React.Key) => {
-    const modal = document.getElementById("my_modal_5");
+    const modal = document.getElementById("edit_premise_status");
     if ((modal as any).showModal) (modal as any).showModal();
+
     setSelectProductId(Number(key));
+    // setSelectProductId(Number(key));
   };
   // const handleUpdatePremiseProduct = (key: InvoiceDataType) => {
   //   const modal = document.getElementById("my_modal_4");
@@ -96,35 +99,30 @@ const Invoice = () => {
   //   setSelectPremise(key);
   // };
 
+  const getPremiseData = async () => {
+    setLoading(true);
+    try {
+      await api.get("/invoice").then(({ data }) => {
+        setData(data);
+        setLoading(false);
+        // setTableParams({
+        //   ...tableParams,
+        //   pagination: {
+        //     ...tableParams.pagination,
+        //     total: data?.length,
+        //   },
+        // });
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(
     () => {
-      const getPremiseData = async () => {
-        setLoading(true);
-        try {
-          await api.get("/invoice").then(({ data }) => {
-            console.log("data", data);
-            setData(data);
-            setLoading(false);
-            // setTableParams({
-            //   ...tableParams,
-            //   pagination: {
-            //     ...tableParams.pagination,
-            //     total: data?.length,
-            //   },
-            // });
-          });
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      };
-
       getPremiseData();
-
-      setTimeout(() => {
-        setSuccessPremise(false);
-      }, 1000);
     },
     [
       // tableParams.pagination?.current,
@@ -248,13 +246,23 @@ const Invoice = () => {
       rowScope: "row",
     },
     {
-      title: "Do'kon nomi",
+      title: "Do'kon nomi (KIRIM)",
       dataIndex: "premise",
       render: (name) => `${name}`,
-      width: "40%",
+      width: "50%",
       sorter: (a, b) => a.premise.length - b.premise.length,
       sortDirections: ["ascend"],
       ...getColumnSearchProps("premise"),
+    },
+    {
+      title: "Do'kon nomi (CHIQIM)",
+      dataIndex: "previousPremiseName",
+      render: (name) => `${name}`,
+      sorter: (a, b) => a.premise.length - b.premise.length,
+      sortDirections: ["ascend"],
+      ...getColumnSearchProps("premise"),
+      fixed: "right",
+      width: "50%",
     },
     {
       title: "Sana",
@@ -275,6 +283,15 @@ const Invoice = () => {
       title: "Tavarlar xarakati",
       dataIndex: "action",
       width: "10%",
+      filters: [
+        { text: "IMPORT", value: "IMPORT" },
+        { text: "EXPORT", value: "EXPORT" },
+      ],
+      onFilter: (value: boolean | Key, record: InvoiceDataType) =>
+        record.status.indexOf(value as string) === 0,
+      render: (item) =>
+        (item === "IMPORT" && <div className="text-yellow-400">KIRIM</div>) ||
+        (item === "EXPORT" && <div className="text-green-400">CHIQIM</div>),
     },
     {
       title: "Tavarlar xolati",
@@ -298,22 +315,23 @@ const Invoice = () => {
     {
       title: "Action",
       dataIndex: "operation",
-      render: (_, record: InvoiceDataType) => (
-        <div className="flex gap-2">
-          <button
-            className="btn btn-warning"
-            onClick={() => handleAddPremiseProduct(record.id)}
-          >
-            Edit
-          </button>
-          {/* <button
-            className="btn btn-warning"
-            onClick={() => handleUpdatePremiseProduct(record)}
-          >
-            Edit
-          </button> */}
-        </div>
-      ),
+      render: (_, record: InvoiceDataType) =>
+        record.status === "PENDING" && (
+          <div className="flex gap-2">
+            <button
+              className="btn btn-warning"
+              onClick={() => handleAddPremiseProduct(record.id)}
+            >
+              Edit
+            </button>
+            {/* <button
+          className="btn btn-warning"
+          onClick={() => handleUpdatePremiseProduct(record)}
+        >
+          Edit
+        </button> */}
+          </div>
+        ),
     },
   ];
 
@@ -365,6 +383,30 @@ const Invoice = () => {
     }
   };
 
+  const handleChangePremiseStatus = () => {
+    if (selectProductId) {
+      try {
+        api
+          .post(`invoice/make-decision/${selectProductId}?isApproved=true`)
+          .then((res) => {
+            getPremiseData();
+            toast.success("Invoice yangilandi!", {
+              position: "top-right",
+              className: "foo-bar",
+            });
+            if (res.status === 200) {
+              setSuccessPremise(true);
+              setSelectProductId(null);
+              const modal = document.getElementById("edit_premise_status");
+              if ((modal as any).showModal) (modal as any).close();
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   // const handleSelectPremiseId = (record: any) => {
 
   //   return record.id;
@@ -392,6 +434,7 @@ const Invoice = () => {
       >
         create new premise
       </button> */}
+
       {/* <dialog id="my_modal_4" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <CreatePremise
@@ -440,6 +483,18 @@ const Invoice = () => {
           </div>
         </div>
       </dialog> */}
+      <dialog id="edit_premise_status" className="modal">
+        <div className="modal-box flex justify-between w-[200px] max-w-5xl relative">
+          <button className="btn" onClick={handleChangePremiseStatus}>
+            Ha
+          </button>
+          <div className="modal-action absolute bottom-6 right-6">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
       <Table
         columns={columnsPremise}
         rowKey={(record) => record.id}
@@ -457,7 +512,6 @@ const Invoice = () => {
         expandable={{
           columnTitle: "Tavarlar",
           expandedRowRender: (record) => {
-            setSelectPremiseId(record.id);
             return (
               <Table
                 columns={columnsPremiseProduct}

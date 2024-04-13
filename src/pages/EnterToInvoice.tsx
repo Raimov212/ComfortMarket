@@ -178,7 +178,7 @@ const EnterToInvoice = () => {
             ) as boolean | undefined
           }
           className="btn btn-warning"
-          onClick={() => handleTransferProduct(record)}
+          onClick={() => handleAddToProduct(record)}
         >
           Qo'shish
         </button>
@@ -186,7 +186,7 @@ const EnterToInvoice = () => {
     },
   ];
 
-  const handleTransferProduct = (record: ProductInfoType) => {
+  const handleAddToProduct = (record: ProductInfoType) => {
     const modal = document.getElementById("create_to_invoice_modal");
     if ((modal as any).showModal) (modal as any).showModal();
     setSelectProductToInvoice((prev) => ({
@@ -213,6 +213,7 @@ const EnterToInvoice = () => {
       <dialog id="create_to_invoice_modal" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <ProductToInvoice
+            type="TO_INVOICE"
             selectProductToInvoice={selectProductToInvoice}
             setSelectProductToInvoice={setSelectProductToInvoice}
             setProductCartInvoice={setProductCartInvoice}
@@ -273,6 +274,7 @@ const EnterToInvoice = () => {
       <dialog id="create_premise_for_product_invoice" className="modal">
         <div className="modal-box flex justify-center w-4/12 max-w-5xl relative">
           <SelectPremiseForProductInvoice
+            type="TO_INVOICE"
             productCartInvoice={productCartInvoice}
             setProductCartInvoice={setProductCartInvoice}
             fetchProduct={fetchProduct}

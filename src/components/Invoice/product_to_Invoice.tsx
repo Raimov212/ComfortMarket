@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, memo } from "react";
 import { InvoiceProductType } from "../../types/invoice";
 
 interface TypesProductToInvoice {
+  type: "TO_INVOICE" | "FROM_INVOICE";
   selectProductToInvoice: InvoiceProductType;
   setSelectProductToInvoice: React.Dispatch<
     React.SetStateAction<InvoiceProductType>
@@ -13,6 +14,7 @@ interface TypesProductToInvoice {
 
 const ProductToInvoice = memo(
   ({
+    type,
     selectProductToInvoice,
     setSelectProductToInvoice,
     setProductCartInvoice,
@@ -61,24 +63,39 @@ const ProductToInvoice = memo(
               />
             </label>
           </div>
-          <div>
-            <label
-              className="form-control w-full max-w-xs"
-              htmlFor="initialPriceKey"
-            >
-              <div className="label">
-                <span className="label-text">Boshlang'ich narxi</span>
-              </div>
-              <input
-                id="initialPriceKey"
-                type="text"
-                value={selectProductToInvoice.initialPrice}
-                onChange={handleChangeForm}
-                name="initialPrice"
-                className="input input-bordered w-full max-w-xs"
-              />
-            </label>
-          </div>
+          {type === "TO_INVOICE" ? (
+            <div>
+              <label
+                className="form-control w-full max-w-xs"
+                htmlFor="initialPriceKey"
+              >
+                <div className="label">
+                  <span className="label-text">Boshlang'ich narxi</span>
+                </div>
+                <input
+                  id="initialPriceKey"
+                  type="text"
+                  value={selectProductToInvoice.initialPrice}
+                  onChange={handleChangeForm}
+                  name="initialPrice"
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </label>
+            </div>
+          ) : (
+            <div>
+              <label
+                className="form-control w-full max-w-xs "
+                htmlFor="initialPriceKey"
+              >
+                <div className="label flex flex-col items-start">
+                  <span className="label-text">Boshlang'ich narxi</span>
+                  <p>{selectProductToInvoice.initialPrice} so'm</p>
+                </div>
+              </label>
+            </div>
+          )}
+
           <div>
             <label
               className="form-control w-full max-w-xs"

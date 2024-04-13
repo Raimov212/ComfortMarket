@@ -44,13 +44,13 @@ const Login = () => {
     e.preventDefault();
 
     if (formData.username === "") {
-      return toast.error(t("signUpError.phoneNumberError"), {
-        position: toast.POSITION.TOP_RIGHT,
+      return toast.error("username bo'sh bo'lishi mumkin emas", {
+        position: "top-right",
         className: "foo-bar",
       });
     } else if (formData.password === "") {
       return toast.error(t("signUpError.passwordError"), {
-        position: toast.POSITION.TOP_RIGHT,
+        position: "top-right",
         className: "foo-bar",
       });
     }
@@ -61,11 +61,15 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         navigate("/home/goods");
+        toast.success("Xush kelibsiz!", {
+          position: "top-right",
+          className: "foo-bar",
+        });
       }
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
         toast.error(t("errorLogin"), {
-          position: toast.POSITION.TOP_RIGHT,
+          position: "top-right",
           className: "foo-bar",
         });
       }
